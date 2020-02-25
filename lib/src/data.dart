@@ -15,6 +15,10 @@
  */
 
 class JsonIntlData {
+  JsonIntlData([this._debug = false]) : assert(_debug != null);
+
+  final bool _debug;
+
   final Map<String, String> _localizedValues = <String, String>{};
 
   List<String> get keys => _localizedValues.keys.toList();
@@ -26,25 +30,47 @@ class JsonIntlData {
   }
 
   String translate(String key) {
-    if (!_localizedValues.containsKey(key)) {
-      return key;
-    }
+    assert(_localizedValues.keys.contains(key), 'The key $key was not found');
 
-    return _localizedValues[key];
+    var value = _localizedValues[key];
+
+    assert(() {
+      if (_debug) {
+        value = '[$key]($value)';
+      }
+      return true;
+    }());
+
+    return value;
   }
 
   String translateWithMap(String key, Map<String, dynamic> map) {
-    if (!_localizedValues.containsKey(key)) {
-      return key;
-    }
+    assert(_localizedValues.keys.contains(key), 'The key $key was not found');
 
     final value = _localizedValues[key];
-    return value.replaceAllMapped(RegExp(r'{{\s*(\w+)\s*}}'), (Match match) {
-      if (map.containsKey(match.group(1))) {
-        return map[match.group(1)].toString();
-      }
-      assert(false, 'Value "${match.group(1)}" not found');
-      return '"${match.group(1)}"';
+    var result =
+        value.replaceAllMapped(RegExp(r'{{\s*(\w+)\s*}}'), (Match match) {
+      final key = match.group(1);
+      assert(map.containsKey(key), 'Value "$key" not found');
+      var value = map[key].toString();
+
+      assert(() {
+        if (_debug) {
+          value = '[$key]($value)';
+        }
+        return true;
+      }());
+
+      return value;
     });
+
+    assert(() {
+      if (_debug) {
+        result = '[$key]($result)';
+      }
+      return true;
+    }());
+
+    return result;
   }
 }

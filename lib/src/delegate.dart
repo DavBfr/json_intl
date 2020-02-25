@@ -18,9 +18,15 @@ part of 'package:json_intl/json_intl.dart';
 
 @immutable
 class JsonIntlDelegate extends LocalizationsDelegate<JsonIntl> {
-  const JsonIntlDelegate({this.availableLocales, this.base = 'assets/intl'});
+  const JsonIntlDelegate({
+    this.availableLocales,
+    this.base = 'assets/intl',
+    this.debug = false,
+  })  : assert(debug != null),
+        assert(base != null);
 
   final String base;
+  final bool debug;
   final List<String> availableLocales;
 
   @override
@@ -29,16 +35,10 @@ class JsonIntlDelegate extends LocalizationsDelegate<JsonIntl> {
   }
 
   @override
-  Future<JsonIntl> load(Locale locale) {
-    return _loadMessages(
-      locale,
-      availableLocales,
-      base,
-    ).then(
-      (JsonIntlData data) {
-        return JsonIntl(locale, data);
-      },
-    );
+  Future<JsonIntl> load(Locale locale) async {
+    final data = JsonIntlData(debug);
+    await _loadMessages(locale, availableLocales, base, data);
+    return JsonIntl(locale, data);
   }
 
   @override

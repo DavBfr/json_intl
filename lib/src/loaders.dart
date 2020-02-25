@@ -33,13 +33,12 @@ Future<void> _addMessagesFile(JsonIntlData result, String filename) async {
   }
 }
 
-Future<JsonIntlData> _loadMessages(
+Future<void> _loadMessages(
   Locale locale,
   List<String> availableLocales,
   String base,
+  JsonIntlData into,
 ) async {
-  final result = JsonIntlData();
-
   final files = <String>{'$base/strings.json'};
 
   if (availableLocales == null ||
@@ -52,8 +51,6 @@ Future<JsonIntlData> _loadMessages(
   }
 
   for (final file in files) {
-    await _addMessagesFile(result, file);
+    await _addMessagesFile(into, file);
   }
-
-  return result;
 }
