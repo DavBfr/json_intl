@@ -17,14 +17,16 @@
 part of 'package:json_intl/json_intl.dart';
 
 class JsonIntl {
-  JsonIntl(this.locale, this._data);
+  const JsonIntl(this.locale, this._data);
 
   final Locale locale;
 
   final JsonIntlData _data;
 
+  static const mock = JsonIntl(Locale('en', 'US'), JsonIntlMockData());
+
   static JsonIntl of(BuildContext context) {
-    return Localizations.of<JsonIntl>(context, JsonIntl);
+    return Localizations.of<JsonIntl>(context, JsonIntl) ?? mock;
   }
 
   String get(String key, [Map<String, dynamic> map]) {

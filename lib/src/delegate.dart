@@ -22,11 +22,17 @@ class JsonIntlDelegate extends LocalizationsDelegate<JsonIntl> {
     this.availableLocales,
     this.base = 'assets/intl',
     this.debug = false,
+    this.mock = false,
   })  : assert(debug != null),
+        assert(mock != null),
         assert(base != null);
 
   final String base;
+
   final bool debug;
+
+  final bool mock;
+
   final List<String> availableLocales;
 
   @override

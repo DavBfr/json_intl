@@ -14,17 +14,20 @@
  * limitations under the License.
  */
 
-library json_intl;
+import 'data.dart';
 
-import 'dart:async';
-import 'dart:convert';
+class JsonIntlMockData implements JsonIntlData {
+  const JsonIntlMockData();
 
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-import 'package:json_intl/src/data.dart';
-import 'package:json_intl/src/mock_data.dart';
+  @override
+  void append(Map<String, dynamic> map) {}
 
-part 'src/context.dart';
-part 'src/delegate.dart';
-part 'src/loaders.dart';
-part 'src/translation.dart';
+  @override
+  List<String> get keys => const <String>[];
+
+  @override
+  String translate(String key) => key;
+
+  @override
+  String translateWithMap(String key, Map<String, dynamic> map) => key;
+}
