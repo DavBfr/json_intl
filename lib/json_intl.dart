@@ -16,3 +16,4 @@
 
 export 'src/json_intl.dart';
 export 'src/json_intl_delegate.dart';
+export 'src/translated.dart';
