@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
-part of 'package:json_intl/json_intl.dart';
+import 'dart:convert';
+
+import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
+
+import 'json_intl_data.dart';
 
 Future<void> _addMessagesFile(JsonIntlData result, String filename) async {
   try {
@@ -33,7 +38,7 @@ Future<void> _addMessagesFile(JsonIntlData result, String filename) async {
   }
 }
 
-Future<void> _loadMessages(
+Future<void> loadMessages(
   Locale locale,
   List<String> availableLocales,
   String base,

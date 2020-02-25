@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-part of 'package:json_intl/json_intl.dart';
+import 'package:flutter/widgets.dart';
+
+import 'json_intl_data.dart';
+import 'json_intl_mock_data.dart';
 
 class JsonIntl {
   const JsonIntl(this.locale, this._data);

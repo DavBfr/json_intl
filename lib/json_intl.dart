@@ -14,17 +14,5 @@
  * limitations under the License.
  */
 
-library json_intl;
-
-import 'dart:async';
-import 'dart:convert';
-
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-import 'package:json_intl/src/data.dart';
-import 'package:json_intl/src/mock_data.dart';
-
-part 'src/context.dart';
-part 'src/delegate.dart';
-part 'src/loaders.dart';
-part 'src/translation.dart';
+export 'src/json_intl.dart';
+export 'src/json_intl_delegate.dart';

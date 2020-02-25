@@ -13,7 +13,8 @@
 // limitations under the License.
 
 import 'package:dart_style/dart_style.dart';
-import 'package:json_intl/src/data.dart';
+
+import 'json_intl_data.dart';
 
 String createSourceFromKeys({
   String className,

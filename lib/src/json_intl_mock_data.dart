@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import 'data.dart';
+import 'json_intl_data.dart';
 
 class JsonIntlMockData implements JsonIntlData {
   const JsonIntlMockData();

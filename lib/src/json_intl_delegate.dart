@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-part of 'package:json_intl/json_intl.dart';
+import 'package:flutter/widgets.dart';
+
+import 'json_intl.dart';
+import 'json_intl_data.dart';
+import 'loaders.dart';
 
 @immutable
 class JsonIntlDelegate extends LocalizationsDelegate<JsonIntl> {
@@ -43,7 +47,7 @@ class JsonIntlDelegate extends LocalizationsDelegate<JsonIntl> {
   @override
   Future<JsonIntl> load(Locale locale) async {
     final data = JsonIntlData(debug);
-    await _loadMessages(locale, availableLocales, base, data);
+    await loadMessages(locale, availableLocales, base, data);
     return JsonIntl(locale, data);
   }
 

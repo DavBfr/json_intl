@@ -18,7 +18,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:json_intl/src/data.dart';
+import 'package:json_intl/src/json_intl_data.dart';
 import 'package:json_intl/src/generator.dart';
 import 'package:json_intl/src/pubspec.dart';
 import 'package:logging/logging.dart';

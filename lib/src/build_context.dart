@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-part of 'package:json_intl/json_intl.dart';
+import 'package:flutter/widgets.dart';
+
+import 'json_intl.dart';
 
 extension on BuildContext {
   String tr(String key, [Map<String, dynamic> map]) =>
