@@ -15,6 +15,7 @@
  */
 
 import 'json_intl_data.dart';
+import 'mustache.dart';
 
 class JsonIntlMockData implements JsonIntlData {
   const JsonIntlMockData();
@@ -29,5 +30,10 @@ class JsonIntlMockData implements JsonIntlData {
   String translate(String key) => key;
 
   @override
-  String translateWithMap(String key, Map<String, dynamic> map) => key;
+  String translateWithMap(
+    String key,
+    Map<String, dynamic> map,
+    Map<String, MustacheFilter> filters,
+  ) =>
+      key;
 }

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import 'mustache.dart';
+
 class JsonIntlData {
   JsonIntlData([this._debug = false]) : assert(_debug != null);
 
@@ -44,25 +46,16 @@ class JsonIntlData {
     return value;
   }
 
-  String translateWithMap(String key, Map<String, dynamic> map) {
+  String translateWithMap(
+    String key,
+    Map<String, dynamic> map,
+    Map<String, MustacheFilter> filters,
+  ) {
     assert(_localizedValues.keys.contains(key), 'The key $key was not found');
 
+    final mustache = Mustache(map: map, filters: filters, debug: _debug);
     final value = _localizedValues[key];
-    var result =
-        value.replaceAllMapped(RegExp(r'{{\s*(\w+)\s*}}'), (Match match) {
-      final key = match.group(1);
-      assert(map.containsKey(key), 'Value "$key" not found');
-      var value = map[key].toString();
-
-      assert(() {
-        if (_debug) {
-          value = '[$key]($value)';
-        }
-        return true;
-      }());
-
-      return value;
-    });
+    var result = mustache.convert(value);
 
     assert(() {
       if (_debug) {

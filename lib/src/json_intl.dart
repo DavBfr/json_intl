@@ -18,6 +18,7 @@ import 'package:flutter/widgets.dart';
 
 import 'json_intl_data.dart';
 import 'json_intl_mock_data.dart';
+import 'mustache.dart';
 
 class JsonIntl {
   const JsonIntl(this.locale, this._data);
@@ -32,11 +33,15 @@ class JsonIntl {
     return Localizations.of<JsonIntl>(context, JsonIntl) ?? mock;
   }
 
-  String get(String key, [Map<String, dynamic> map]) {
+  String get(
+    String key, [
+    Map<String, dynamic> map,
+    Map<String, MustacheFilter> filters,
+  ]) {
     if (map == null) {
       return _data.translate(key);
     }
 
-    return _data.translateWithMap(key, map);
+    return _data.translateWithMap(key, map, filters);
   }
 }
