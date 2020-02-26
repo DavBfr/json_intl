@@ -53,7 +53,11 @@ class JsonIntlData {
   ) {
     assert(_localizedValues.keys.contains(key), 'The key $key was not found');
 
-    final mustache = Mustache(map: map, filters: filters, debug: _debug);
+    final mustache = Mustache(
+      map: map,
+      filters: filters ?? const <String, MustacheFilter>{},
+      debug: _debug,
+    );
     final value = _localizedValues[key];
     var result = mustache.convert(value);
 
