@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import 'dart:ui' as ui show TextHeightBehavior;
-
 import 'package:flutter/widgets.dart';
 
 import 'json_intl.dart';
@@ -33,7 +31,6 @@ class Translated extends StatelessWidget {
     this.maxLines,
     this.semanticsLabel,
     this.textWidthBasis,
-    this.textHeightBehavior,
   })  : assert(keyword != null),
         super(key: key);
 
@@ -61,8 +58,6 @@ class Translated extends StatelessWidget {
 
   final TextWidthBasis textWidthBasis;
 
-  final ui.TextHeightBehavior textHeightBehavior;
-
   @override
   Widget build(BuildContext context) {
     final intl = JsonIntl.of(context);
@@ -79,7 +74,6 @@ class Translated extends StatelessWidget {
       style: style,
       textAlign: textAlign,
       textDirection: textDirection,
-      textHeightBehavior: textHeightBehavior,
       textScaleFactor: textScaleFactor,
       textWidthBasis: textWidthBasis,
     );
