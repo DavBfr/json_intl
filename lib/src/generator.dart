@@ -16,6 +16,22 @@ import 'package:dart_style/dart_style.dart';
 
 import 'json_intl_data.dart';
 
+String stripExtension(String a) {
+  final i = a.lastIndexOf('.');
+
+  if (i >= 0) {
+    return a.substring(0, i);
+  }
+
+  return a;
+}
+
+int langCompare(String a, String b) {
+  a = stripExtension(a);
+  b = stripExtension(b);
+  return a.compareTo(b);
+}
+
 String createSourceFromKeys({
   String className,
   bool format = true,
@@ -31,9 +47,14 @@ String createSourceFromKeys({
   for (final entry in intl.entries) {
     keys.addAll(entry.value.keys);
   }
+  final sortedKeys = keys.toList();
+  sortedKeys.sort();
+
+  final langs = intl.entries.map<String>((e) => e.key).toSet().toList();
+  langs.sort(langCompare);
 
   final variables = <String>{};
-  for (final key in keys) {
+  for (final key in sortedKeys) {
     var variable = _outputVar(key);
 
     var index = 0;
@@ -44,12 +65,12 @@ String createSourceFromKeys({
     }
     variables.add(variable);
 
-    for (final entry in intl.entries) {
-      if (entry.value.keys.contains(key)) {
-        output.add(
-            '  /// ${entry.key}: ${_outputStr(entry.value.translate(key))}');
+    for (final lang in langs) {
+      final entry = intl[lang];
+      if (entry.keys.contains(key)) {
+        output.add('  /// $lang: ${_outputStr(entry.translate(key))}');
       } else {
-        output.add('  /// ${entry.key}: *** NOT TRANSLATED ***');
+        output.add('  /// $lang: *** NOT TRANSLATED ***');
       }
     }
     output.add('  static const $variable = ${_outputStr(key)};');
