@@ -18,13 +18,15 @@
 
 import 'dart:convert';
 
+import 'package:meta/meta.dart';
+
 typedef MustacheFilter = dynamic Function(dynamic value);
 
 class Mustache extends Converter<String, String> {
   Mustache({
     this.map = const <String, dynamic>{},
     this.filters = const <String, MustacheFilter>{},
-    this.debug,
+    @required this.debug,
   })  : assert(map != null),
         assert(filters != null),
         assert(debug != null);

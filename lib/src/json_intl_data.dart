@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+import 'dart:convert';
+
+import 'json_intl_value.dart';
 import 'mustache.dart';
 
 class JsonIntlData {
@@ -21,20 +24,21 @@ class JsonIntlData {
 
   final bool _debug;
 
-  final Map<String, String> _localizedValues = <String, String>{};
+  final Map<String, JsonIntlValue> _localizedValues = <String, JsonIntlValue>{};
 
   List<String> get keys => _localizedValues.keys.toList();
 
   void append(Map<String, dynamic> map) {
     map.forEach((String key, dynamic value) {
-      _localizedValues[key] = value.toString();
+      _localizedValues[key] = JsonIntlValue.fromJson(value);
     });
   }
 
   String translate(String key) {
     assert(_localizedValues.keys.contains(key), 'The key $key was not found');
 
-    var value = _localizedValues[key];
+    final message = _localizedValues[key];
+    var value = message.get(JsonIntlGender.neutral, JsonIntlPlurial.other);
 
     assert(() {
       if (_debug) {
@@ -50,16 +54,38 @@ class JsonIntlData {
     String key,
     Map<String, dynamic> map,
     Map<String, MustacheFilter> filters,
+    num count,
+    JsonIntlGender gender,
   ) {
     assert(_localizedValues.keys.contains(key), 'The key $key was not found');
+
+    map ??= <String, dynamic>{'count': count};
 
     final mustache = Mustache(
       map: map,
       filters: filters ?? const <String, MustacheFilter>{},
       debug: _debug,
     );
-    final value = _localizedValues[key];
-    var result = mustache.convert(value);
+    final message = _localizedValues[key];
+
+    JsonIntlPlurial plurial;
+    if (count == null) {
+      plurial = JsonIntlPlurial.other;
+    } else if (count == 0) {
+      plurial = JsonIntlPlurial.zero;
+    } else if (count == 1) {
+      plurial = JsonIntlPlurial.one;
+    } else if (count == 2) {
+      plurial = JsonIntlPlurial.two;
+    } else if (count > 0 && count < 10) {
+      plurial = JsonIntlPlurial.few;
+    } else if (count < 0) {
+      plurial = JsonIntlPlurial.other;
+    } else {
+      plurial = JsonIntlPlurial.many;
+    }
+
+    var result = mustache.convert(message.get(gender, plurial));
 
     assert(() {
       if (_debug) {
@@ -69,5 +95,14 @@ class JsonIntlData {
     }());
 
     return result;
+  }
+
+  @override
+  String toString() {
+    var s = '{';
+    _localizedValues.forEach((key, value) {
+      s += json.encode(key) + ':' + value.toString() + ',';
+    });
+    return s.substring(0, s.length - 1) + '}';
   }
 }

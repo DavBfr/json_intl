@@ -18,6 +18,7 @@ import 'package:flutter/widgets.dart';
 
 import 'json_intl_data.dart';
 import 'json_intl_mock_data.dart';
+import 'json_intl_value.dart';
 import 'mustache.dart';
 
 class JsonIntl {
@@ -42,6 +43,34 @@ class JsonIntl {
       return _data.translate(key);
     }
 
-    return _data.translateWithMap(key, map, filters);
+    return _data.translateWithMap(key, map, filters, null, null);
+  }
+
+  String count(
+    num value,
+    String key, [
+    Map<String, dynamic> map,
+    Map<String, MustacheFilter> filters,
+  ]) {
+    return _data.translateWithMap(key, map, filters, value, null);
+  }
+
+  String gender(
+    JsonIntlGender gender,
+    String key, [
+    Map<String, dynamic> map,
+    Map<String, MustacheFilter> filters,
+  ]) {
+    return _data.translateWithMap(key, map, filters, null, gender);
+  }
+
+  String genderCount(
+    JsonIntlGender gender,
+    int count,
+    String key, [
+    Map<String, dynamic> map,
+    Map<String, MustacheFilter> filters,
+  ]) {
+    return _data.translateWithMap(key, map, filters, count, gender);
   }
 }
