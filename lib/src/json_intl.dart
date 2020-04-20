@@ -43,7 +43,12 @@ class JsonIntl {
       return _data.translate(key);
     }
 
-    return _data.translateWithMap(key, map, filters, null, null);
+    return _data.translateWithMap(
+      key,
+      map: map,
+      filters: filters,
+      locale: locale,
+    );
   }
 
   String count(
@@ -52,7 +57,13 @@ class JsonIntl {
     Map<String, dynamic> map,
     Map<String, MustacheFilter> filters,
   ]) {
-    return _data.translateWithMap(key, map, filters, value, null);
+    return _data.translateWithMap(
+      key,
+      map: map,
+      filters: filters,
+      count: value,
+      locale: locale,
+    );
   }
 
   String gender(
@@ -61,7 +72,13 @@ class JsonIntl {
     Map<String, dynamic> map,
     Map<String, MustacheFilter> filters,
   ]) {
-    return _data.translateWithMap(key, map, filters, null, gender);
+    return _data.translateWithMap(
+      key,
+      map: map,
+      filters: filters,
+      gender: gender,
+      locale: locale,
+    );
   }
 
   String genderCount(
@@ -71,6 +88,13 @@ class JsonIntl {
     Map<String, dynamic> map,
     Map<String, MustacheFilter> filters,
   ]) {
-    return _data.translateWithMap(key, map, filters, count, gender);
+    return _data.translateWithMap(
+      key,
+      map: map,
+      filters: filters,
+      count: count,
+      gender: gender,
+      locale: locale,
+    );
   }
 }

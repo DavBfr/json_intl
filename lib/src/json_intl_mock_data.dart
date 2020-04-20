@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import 'dart:ui';
+
 import 'json_intl_data.dart';
 import 'json_intl_value.dart';
 import 'mustache.dart';
@@ -32,11 +34,13 @@ class JsonIntlMockData implements JsonIntlData {
 
   @override
   String translateWithMap(
-    String key,
+    String key, {
     Map<String, dynamic> map,
     Map<String, MustacheFilter> filters,
     num count,
     JsonIntlGender gender,
-  ) =>
+    int precision = 0,
+    Locale locale,
+  }) =>
       key;
 }

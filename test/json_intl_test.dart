@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import 'dart:ui';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:json_intl/src/json_intl_data.dart';
 import 'package:json_intl/src/json_intl_value.dart';
@@ -54,15 +56,15 @@ void main() {
       },
       'key7': <String, dynamic>{
         'male': {
-          'one': 'the boy',
+          'one': 'a boy',
           'many': '{{count}} boys',
         },
         'female': {
-          'one': 'the girl',
-          'many': '{{count}} girls',
+          'one': 'a girl',
+          'many': '{{count }} girls',
         },
         'neutral': {
-          'one': 'the child',
+          'one': 'a child',
           'many': '{{ count}} children',
         }
       },
@@ -75,55 +77,104 @@ void main() {
   });
 
   test('Map translation', () {
-    expect(data.translateWithMap('key1', map, null, null, null), 'value');
-    expect(data.translateWithMap('key2', map, null, null, null), 'value 123');
+    expect(data.translateWithMap('key1', map: map), 'value');
+    expect(data.translateWithMap('key2', map: map), 'value 123');
   });
 
   test('Filter translation', () {
-    expect(data.translateWithMap('key1', map, fn, null, null), 'value');
-    expect(data.translateWithMap('key2', map, fn, null, null), 'value 123');
-    expect(data.translateWithMap('key3', map, fn, null, null), 'value "123"');
+    expect(data.translateWithMap('key1', map: map, filters: fn), 'value');
+    expect(data.translateWithMap('key2', map: map, filters: fn), 'value 123');
+    expect(data.translateWithMap('key3', map: map, filters: fn), 'value "123"');
   });
 
-  test('Plurial translation', () {
-    expect(data.translateWithMap('key4', map, fn, 0, null), 'no value');
-    expect(data.translateWithMap('key4', map, fn, 1, null), 'one value');
-    expect(data.translateWithMap('key4', map, fn, 2, null), 'two values');
-    expect(data.translateWithMap('key4', map, fn, 3, null), 'few values');
-    expect(data.translateWithMap('key4', map, fn, 10, null), 'many values');
-    expect(data.translateWithMap('key4', map, fn, -1, null), 'other values');
+  test('Plurial translation ar_AR', () {
+    const locale = Locale('ar', 'AR');
+    expect(
+      data.translateWithMap('key4',
+          map: map, filters: fn, count: 0, locale: locale),
+      'no value',
+    );
+    expect(
+        data.translateWithMap('key4',
+            map: map, filters: fn, count: 1, locale: locale),
+        'one value');
+    expect(
+        data.translateWithMap('key4',
+            map: map, filters: fn, count: 2, locale: locale),
+        'two values');
+    expect(
+        data.translateWithMap('key4',
+            map: map, filters: fn, count: 3, locale: locale),
+        'few values');
+    expect(
+        data.translateWithMap('key4',
+            map: map, filters: fn, count: 100, locale: locale),
+        'other values');
+    expect(
+        data.translateWithMap('key4',
+            map: map, filters: fn, count: -1, locale: locale),
+        'many values');
+  });
+
+  test('Plurial translation en_US', () {
+    const locale = Locale('en', 'US');
+    expect(
+      data.translateWithMap('key4',
+          map: map, filters: fn, count: 0, locale: locale),
+      'other values',
+    );
+    expect(
+        data.translateWithMap('key4',
+            map: map, filters: fn, count: 1, locale: locale),
+        'one value');
+    expect(
+        data.translateWithMap('key4',
+            map: map, filters: fn, count: 2, locale: locale),
+        'other values');
+    expect(
+        data.translateWithMap('key4',
+            map: map, filters: fn, count: 3, locale: locale),
+        'other values');
+    expect(
+        data.translateWithMap('key4',
+            map: map, filters: fn, count: 100, locale: locale),
+        'other values');
+    expect(
+        data.translateWithMap('key4',
+            map: map, filters: fn, count: -1, locale: locale),
+        'other values');
   });
 
   test('Plurial translation limited', () {
-    expect(data.translateWithMap('key5', null, null, 0, null), '0 values');
-    expect(data.translateWithMap('key5', null, null, 1, null), 'one value');
-    expect(data.translateWithMap('key5', null, null, 2, null), '2 values');
-    expect(data.translateWithMap('key5', null, null, 3, null), '3 values');
-    expect(data.translateWithMap('key5', null, null, 10, null), '10 values');
-    expect(data.translateWithMap('key5', null, null, -1, null), '-1 values');
+    expect(data.translateWithMap('key5', count: 0), '0 values');
+    expect(data.translateWithMap('key5', count: 1), 'one value');
+    expect(data.translateWithMap('key5', count: 2), '2 values');
+    expect(data.translateWithMap('key5', count: 3), '3 values');
+    expect(data.translateWithMap('key5', count: 10), '10 values');
+    expect(data.translateWithMap('key5', count: -1), '-1 values');
   });
 
   test('Gender translation', () {
-    expect(data.translateWithMap('key6', null, null, null, null), 'the child');
-    expect(data.translateWithMap('key6', null, null, null, JsonIntlGender.male),
-        'the boy');
+    expect(data.translateWithMap('key6'), 'the child');
     expect(
-        data.translateWithMap('key6', null, null, null, JsonIntlGender.female),
+        data.translateWithMap('key6', gender: JsonIntlGender.male), 'the boy');
+    expect(data.translateWithMap('key6', gender: JsonIntlGender.female),
         'the girl');
   });
 
   test('Gender and plurial translation', () {
+    expect(data.translateWithMap('key7'), 'null children');
+    expect(data.translateWithMap('key7', count: 1), 'a child');
+    expect(data.translateWithMap('key7', count: 2), '2 children');
+    expect(data.translateWithMap('key7', count: 1, gender: JsonIntlGender.male),
+        'a boy');
     expect(
-        data.translateWithMap('key7', null, null, null, null), 'null children');
-    expect(data.translateWithMap('key7', null, null, 1, null), 'the child');
-    expect(data.translateWithMap('key7', null, null, 2, null), '2 children');
-    expect(data.translateWithMap('key7', null, null, 1, JsonIntlGender.male),
-        'the boy');
-    expect(data.translateWithMap('key7', null, null, 1, JsonIntlGender.female),
-        'the girl');
-    expect(data.translateWithMap('key7', null, null, 2, JsonIntlGender.male),
+        data.translateWithMap('key7', count: 1, gender: JsonIntlGender.female),
+        'a girl');
+    expect(data.translateWithMap('key7', count: 2, gender: JsonIntlGender.male),
         '2 boys');
-    expect(data.translateWithMap('key7', null, null, 2, JsonIntlGender.female),
+    expect(
+        data.translateWithMap('key7', count: 2, gender: JsonIntlGender.female),
         '2 girls');
   });
 }

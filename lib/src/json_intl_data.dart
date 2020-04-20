@@ -14,13 +14,23 @@
  * limitations under the License.
  */
 
+// ignore_for_file: implementation_imports
+
 import 'dart:convert';
+import 'dart:ui';
+
+import 'package:intl/intl.dart';
+import 'package:intl/src/plural_rules.dart' as plural_rules;
 
 import 'json_intl_value.dart';
 import 'mustache.dart';
 
 class JsonIntlData {
   JsonIntlData([this._debug = false]) : assert(_debug != null);
+
+  static String _cachedPluralLocale;
+
+  static plural_rules.PluralRule _cachedPluralRule;
 
   final bool _debug;
 
@@ -50,13 +60,30 @@ class JsonIntlData {
     return value;
   }
 
+  static plural_rules.PluralRule _pluralRule(
+      String locale, num howMany, int precision) {
+    plural_rules.startRuleEvaluation(howMany, precision);
+    final verifiedLocale = Intl.verifiedLocale(
+        locale, plural_rules.localeHasPluralRules,
+        onFailure: (locale) => 'default');
+    if (_cachedPluralLocale == verifiedLocale) {
+      return _cachedPluralRule;
+    } else {
+      _cachedPluralRule = plural_rules.pluralRules[verifiedLocale];
+      _cachedPluralLocale = verifiedLocale;
+      return _cachedPluralRule;
+    }
+  }
+
   String translateWithMap(
-    String key,
+    String key, {
     Map<String, dynamic> map,
     Map<String, MustacheFilter> filters,
     num count,
     JsonIntlGender gender,
-  ) {
+    int precision = 0,
+    Locale locale,
+  }) {
     assert(_localizedValues.keys.contains(key), 'The key $key was not found');
 
     map ??= <String, dynamic>{'count': count};
@@ -68,21 +95,32 @@ class JsonIntlData {
     );
     final message = _localizedValues[key];
 
-    JsonIntlPlurial plurial;
-    if (count == null) {
-      plurial = JsonIntlPlurial.other;
-    } else if (count == 0) {
-      plurial = JsonIntlPlurial.zero;
-    } else if (count == 1) {
-      plurial = JsonIntlPlurial.one;
-    } else if (count == 2) {
-      plurial = JsonIntlPlurial.two;
-    } else if (count > 0 && count < 10) {
-      plurial = JsonIntlPlurial.few;
-    } else if (count < 0) {
-      plurial = JsonIntlPlurial.other;
-    } else {
-      plurial = JsonIntlPlurial.many;
+    var plurial = JsonIntlPlurial.other;
+
+    if (count != null) {
+      final pluralRule = _pluralRule(locale?.toLanguageTag(), count, precision);
+      if (pluralRule != null) {
+        switch (pluralRule.call()) {
+          case plural_rules.PluralCase.ZERO:
+            plurial = JsonIntlPlurial.zero;
+            break;
+          case plural_rules.PluralCase.ONE:
+            plurial = JsonIntlPlurial.one;
+            break;
+          case plural_rules.PluralCase.TWO:
+            plurial = JsonIntlPlurial.two;
+            break;
+          case plural_rules.PluralCase.FEW:
+            plurial = JsonIntlPlurial.few;
+            break;
+          case plural_rules.PluralCase.MANY:
+            plurial = JsonIntlPlurial.many;
+            break;
+          case plural_rules.PluralCase.OTHER:
+            plurial = JsonIntlPlurial.other;
+            break;
+        }
+      }
     }
 
     var result = mustache.convert(message.get(gender, plurial));

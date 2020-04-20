@@ -50,6 +50,42 @@ class JsonIntlValue {
     return JsonIntlValue(map);
   }
 
+  final Map<JsonIntlGender, Map<JsonIntlPlurial, String>> _messages;
+
+  String get(JsonIntlGender gender, JsonIntlPlurial plurial) {
+    final p = _messages[gender] ??
+        _messages[JsonIntlGender.neutral] ??
+        _messages[JsonIntlGender.male] ??
+        _messages[JsonIntlGender.female];
+
+    if (p == null) {
+      return null;
+    }
+
+    if (p.containsKey(plurial)) {
+      return p[plurial];
+    }
+
+    switch (plurial) {
+      case JsonIntlPlurial.zero:
+        return p[JsonIntlPlurial.few] ??
+            p[JsonIntlPlurial.many] ??
+            p[JsonIntlPlurial.other];
+      case JsonIntlPlurial.one:
+        return p[JsonIntlPlurial.other];
+      case JsonIntlPlurial.two:
+        return p[JsonIntlPlurial.few] ??
+            p[JsonIntlPlurial.many] ??
+            p[JsonIntlPlurial.other];
+      case JsonIntlPlurial.many:
+        return p[JsonIntlPlurial.other];
+      case JsonIntlPlurial.few:
+        return p[JsonIntlPlurial.many] ?? p[JsonIntlPlurial.other];
+      default:
+        return p[JsonIntlPlurial.few] ?? p[JsonIntlPlurial.many];
+    }
+  }
+
   static void _loadGender(Map map, Map<String, dynamic> message) {
     for (final key in message.keys) {
       switch (key) {
@@ -98,42 +134,6 @@ class JsonIntlValue {
         default:
           map[JsonIntlPlurial.other] = message[key];
       }
-    }
-  }
-
-  final Map<JsonIntlGender, Map<JsonIntlPlurial, String>> _messages;
-
-  String get(JsonIntlGender gender, JsonIntlPlurial plurial) {
-    final p = _messages[gender] ??
-        _messages[JsonIntlGender.neutral] ??
-        _messages[JsonIntlGender.male] ??
-        _messages[JsonIntlGender.female];
-
-    if (p == null) {
-      return null;
-    }
-
-    if (p.containsKey(plurial)) {
-      return p[plurial];
-    }
-
-    switch (plurial) {
-      case JsonIntlPlurial.zero:
-        return p[JsonIntlPlurial.few] ??
-            p[JsonIntlPlurial.many] ??
-            p[JsonIntlPlurial.other];
-      case JsonIntlPlurial.one:
-        return p[JsonIntlPlurial.other];
-      case JsonIntlPlurial.two:
-        return p[JsonIntlPlurial.few] ??
-            p[JsonIntlPlurial.many] ??
-            p[JsonIntlPlurial.other];
-      case JsonIntlPlurial.many:
-        return p[JsonIntlPlurial.other];
-      case JsonIntlPlurial.few:
-        return p[JsonIntlPlurial.many] ?? p[JsonIntlPlurial.other];
-      default:
-        return p[JsonIntlPlurial.few] ?? p[JsonIntlPlurial.many];
     }
   }
 
