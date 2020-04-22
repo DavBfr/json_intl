@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter_test/flutter_test.dart';
@@ -71,6 +72,17 @@ void main() {
     });
   });
 
+  test('Export translations', () {
+    var file = File('test/data/strings.json');
+    if (!file.existsSync()) {
+      file = File('data/strings.json');
+    }
+
+    final json = data.toString();
+    expect(file.readAsStringSync(), json);
+    file.writeAsStringSync(json);
+  });
+
   test('Simple translation', () {
     expect(data.translate('key1'), 'value');
     expect(data.translate('key2'), 'value {{ num }}');
@@ -88,7 +100,7 @@ void main() {
   });
 
   test('Plurial translation ar_AR', () {
-    const locale = Locale('ar', 'AR');
+    const locale = 'ar-AR';
     expect(
       data.translateWithMap('key4',
           map: map, filters: fn, count: 0, locale: locale),
@@ -117,7 +129,7 @@ void main() {
   });
 
   test('Plurial translation en_US', () {
-    const locale = Locale('en', 'US');
+    const locale = 'en-US';
     expect(
       data.translateWithMap('key4',
           map: map, filters: fn, count: 0, locale: locale),

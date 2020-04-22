@@ -40,7 +40,7 @@ class JsonIntlMockData implements JsonIntlData {
     num count,
     JsonIntlGender gender,
     int precision = 0,
-    Locale locale,
+    String locale,
   }) =>
       key;
 }

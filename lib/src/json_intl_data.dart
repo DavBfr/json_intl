@@ -17,7 +17,6 @@
 // ignore_for_file: implementation_imports
 
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:intl/intl.dart';
 import 'package:intl/src/plural_rules.dart' as plural_rules;
@@ -82,7 +81,7 @@ class JsonIntlData {
     num count,
     JsonIntlGender gender,
     int precision = 0,
-    Locale locale,
+    String locale,
   }) {
     assert(_localizedValues.keys.contains(key), 'The key $key was not found');
 
@@ -98,7 +97,7 @@ class JsonIntlData {
     var plurial = JsonIntlPlurial.other;
 
     if (count != null) {
-      final pluralRule = _pluralRule(locale?.toLanguageTag(), count, precision);
+      final pluralRule = _pluralRule(locale, count, precision);
       if (pluralRule != null) {
         switch (pluralRule.call()) {
           case plural_rules.PluralCase.ZERO:

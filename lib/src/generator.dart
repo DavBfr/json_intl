@@ -41,6 +41,7 @@ String createSourceFromKeys({
 
   output.add('// This file is generated automatically, do not modify');
   output.add('');
+  output.add('/// Internationalization constants');
   output.add('class $className {');
 
   final keys = <String>{};

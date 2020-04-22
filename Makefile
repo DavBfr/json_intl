@@ -25,7 +25,8 @@ clean:
 	git clean -fdx -e .vscode
 
 test:
-	pub run test
+	flutter test
+	dart bin/json_intl.dart -s test/data -d test/intl.dart -v
 
 publish: format analyze clean
 	pub publish -f

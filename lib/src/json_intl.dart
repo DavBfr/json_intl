@@ -47,7 +47,7 @@ class JsonIntl {
       key,
       map: map,
       filters: filters,
-      locale: locale,
+      locale: locale?.toLanguageTag(),
     );
   }
 
@@ -62,7 +62,7 @@ class JsonIntl {
       map: map,
       filters: filters,
       count: value,
-      locale: locale,
+      locale: locale?.toLanguageTag(),
     );
   }
 
@@ -77,7 +77,7 @@ class JsonIntl {
       map: map,
       filters: filters,
       gender: gender,
-      locale: locale,
+      locale: locale?.toLanguageTag(),
     );
   }
 
@@ -94,7 +94,7 @@ class JsonIntl {
       filters: filters,
       count: count,
       gender: gender,
-      locale: locale,
+      locale: locale?.toLanguageTag(),
     );
   }
 }
