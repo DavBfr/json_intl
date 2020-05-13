@@ -1,20 +1,10 @@
-/*
- * Copyright (C) 2019, David PHAM-VAN <dev.nfet.net@gmail.com>
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright (c) 2020, David PHAM-VAN <dev.nfet.net@gmail.com>
+// All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
 
 // ignore_for_file: implementation_imports
+// ignore_for_file: public_member_api_docs
 
 import 'dart:convert';
 
@@ -47,7 +37,11 @@ class JsonIntlData {
     assert(_localizedValues.keys.contains(key), 'The key $key was not found');
 
     final message = _localizedValues[key];
-    var value = message.get(JsonIntlGender.neutral, JsonIntlPlurial.other);
+    var value = message.get(
+      JsonIntlGender.neutral,
+      JsonIntlPlural.other,
+      null,
+    );
 
     assert(() {
       if (_debug) {
@@ -82,10 +76,12 @@ class JsonIntlData {
     JsonIntlGender gender,
     int precision = 0,
     String locale,
+    bool strict,
   }) {
     assert(_localizedValues.keys.contains(key), 'The key $key was not found');
 
     map ??= <String, dynamic>{'count': count};
+    final _strict = strict ?? true;
 
     final mustache = Mustache(
       map: map,
@@ -94,35 +90,48 @@ class JsonIntlData {
     );
     final message = _localizedValues[key];
 
-    var plurial = JsonIntlPlurial.other;
+    var plural = JsonIntlPlural.other;
+    JsonIntlPlural direct;
 
     if (count != null) {
+      if (count == 0) {
+        direct = JsonIntlPlural.zero;
+      } else if (count == 1) {
+        direct = JsonIntlPlural.one;
+      } else if (count == 2) {
+        direct = JsonIntlPlural.two;
+      }
+
       final pluralRule = _pluralRule(locale, count, precision);
       if (pluralRule != null) {
         switch (pluralRule.call()) {
           case plural_rules.PluralCase.ZERO:
-            plurial = JsonIntlPlurial.zero;
+            plural = JsonIntlPlural.zero;
             break;
           case plural_rules.PluralCase.ONE:
-            plurial = JsonIntlPlurial.one;
+            plural = JsonIntlPlural.one;
             break;
           case plural_rules.PluralCase.TWO:
-            plurial = JsonIntlPlurial.two;
+            plural = JsonIntlPlural.two;
             break;
           case plural_rules.PluralCase.FEW:
-            plurial = JsonIntlPlurial.few;
+            plural = JsonIntlPlural.few;
             break;
           case plural_rules.PluralCase.MANY:
-            plurial = JsonIntlPlurial.many;
+            plural = JsonIntlPlural.many;
             break;
           case plural_rules.PluralCase.OTHER:
-            plurial = JsonIntlPlurial.other;
+            plural = JsonIntlPlural.other;
             break;
         }
       }
     }
 
-    var result = mustache.convert(message.get(gender, plurial));
+    var result = mustache.convert(message.get(
+      gender,
+      plural,
+      _strict ? null : direct,
+    ));
 
     assert(() {
       if (_debug) {
@@ -136,10 +145,18 @@ class JsonIntlData {
 
   @override
   String toString() {
-    var s = '{';
-    _localizedValues.forEach((key, value) {
-      s += json.encode(key) + ':' + value.toString() + ',';
-    });
-    return s.substring(0, s.length - 1) + '}';
+    final s = StringBuffer('{');
+    var first = true;
+    for (final entry in _localizedValues.entries) {
+      if (!first) {
+        s.write(',');
+      }
+      first = false;
+      s.write(json.encode(entry.key));
+      s.write(':');
+      s.write(entry.value.toString());
+    }
+    s.write('}');
+    return s.toString();
   }
 }

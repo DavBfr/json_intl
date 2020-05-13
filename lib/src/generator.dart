@@ -1,22 +1,13 @@
-// Copyright (C) 2019, David PHAM-VAN <dev.nfet.net@gmail.com>
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Copyright (c) 2020, David PHAM-VAN <dev.nfet.net@gmail.com>
+// All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
 
 import 'package:dart_style/dart_style.dart';
 
 import 'json_intl_data.dart';
 
-String stripExtension(String a) {
+String _stripExtension(String a) {
   final i = a.lastIndexOf('.');
 
   if (i >= 0) {
@@ -26,12 +17,13 @@ String stripExtension(String a) {
   return a;
 }
 
-int langCompare(String a, String b) {
-  a = stripExtension(a);
-  b = stripExtension(b);
+int _langCompare(String a, String b) {
+  a = _stripExtension(a);
+  b = _stripExtension(b);
   return a.compareTo(b);
 }
 
+/// Generate a dart class from a list of translation keys
 String createSourceFromKeys({
   String className,
   bool format = true,
@@ -52,7 +44,7 @@ String createSourceFromKeys({
   sortedKeys.sort();
 
   final langs = intl.entries.map<String>((e) => e.key).toSet().toList();
-  langs.sort(langCompare);
+  langs.sort(_langCompare);
 
   final variables = <String>{};
   for (final key in sortedKeys) {

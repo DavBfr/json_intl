@@ -1,0 +1,10 @@
+{
+    "app_name": "Flutter Demo",
+    "increment": "Increment",
+    "pushed": {
+        "zero": "Please push the button.",
+        "one": "You have pushed the button just once.",
+        "other": "You have pushed the button {{ count }} times."
+    },
+    "title": "Flutter Demo Home Page"
+}

@@ -1,18 +1,7 @@
-/*
- * Copyright (C) 2019, David PHAM-VAN <dev.nfet.net@gmail.com>
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright (c) 2020, David PHAM-VAN <dev.nfet.net@gmail.com>
+// All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
 
 import 'package:flutter/widgets.dart';
 
@@ -20,23 +9,28 @@ import 'json_intl.dart';
 import 'json_intl_data.dart';
 import 'loaders.dart';
 
+/// A factory for a set of localized JsonIntl resources to be loaded by a
+/// [Localizations] widget.
 @immutable
 class JsonIntlDelegate extends LocalizationsDelegate<JsonIntl> {
+  /// Create the factory responsible of loading the language files
   const JsonIntlDelegate({
     this.availableLocales,
     this.base = 'assets/intl',
     this.debug = false,
-    this.mock = false,
   })  : assert(debug != null),
-        assert(mock != null),
         assert(base != null);
 
+  /// The assets path where to find the localization files
   final String base;
 
+  /// Wether to use debug locatizations or not.
+  /// In debug mode, the string returned will contain debug information
+  /// about how it is translated
   final bool debug;
 
-  final bool mock;
-
+  /// List of locales that can be used by the application. If null, the locales
+  /// will be detedected automatically.
   final List<String> availableLocales;
 
   @override

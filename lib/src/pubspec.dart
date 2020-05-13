@@ -1,22 +1,24 @@
 // This file is generated automatically, do not modify
 
+// ignore_for_file: public_member_api_docs
+
 class Pubspec {
   static const String name = 'json_intl';
 
   static const String description =
       'Flutter Internationalization library based on Json files';
 
-  static const String versionFull = '0.0.1';
+  static const String versionFull = '1.0.0';
 
-  static const String version = '0.0.1';
+  static const String version = '1.0.0';
 
-  static const String versionSmall = '0.0';
+  static const String versionSmall = '1.0';
 
-  static const int versionMajor = 0;
+  static const int versionMajor = 1;
 
   static const int versionMinor = 0;
 
-  static const int versionPatch = 1;
+  static const int versionPatch = 0;
 
   static const int versionBuild = 0;
 
@@ -34,8 +36,10 @@ class Pubspec {
     'flutter': <dynamic, dynamic>{
       'sdk': 'flutter',
     },
-    'logging': '^0.11.0',
     'dart_style': '^1.2.9',
+    'intl': '^0.16.0',
+    'logging': '^0.11.0',
+    'meta': '^1.1.0',
   };
 
   static const Map<dynamic, dynamic> dev_dependencies = <dynamic, dynamic>{

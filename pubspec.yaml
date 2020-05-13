@@ -1,6 +1,6 @@
 name: json_intl
 description: Flutter Internationalization library based on Json files
-version: 0.0.2
+version: 1.0.0
 homepage: https://github.com/DavBfr/json_intl
 author: David PHAM-VAN <dev.nfet.net@gmail.com>
 

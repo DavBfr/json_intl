@@ -1,48 +1,58 @@
-/*
- * Copyright (C) 2019, David PHAM-VAN <dev.nfet.net@gmail.com>
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright (c) 2020, David PHAM-VAN <dev.nfet.net@gmail.com>
+// All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
 
 import 'dart:convert';
 
 import 'package:meta/meta.dart';
 
+/// Type of gender to use
 enum JsonIntlGender {
+  /// male gender, like 'a boy'
   male,
+
+  /// female gender, like 'a girl'
   female,
+
+  /// neutral gender, like 'a kid'
   neutral,
 }
 
-enum JsonIntlPlurial {
+/// Type of Plural to use as [count]
+enum JsonIntlPlural {
+  /// count is 0
   zero,
+
+  /// count is 1
   one,
+
+  /// count is 2
   two,
-  many,
+
+  /// count is more than 2
   few,
+
+  /// count is more than a few
+  many,
+
+  /// count is any other value
   other,
 }
 
+/// Represents a translated string with all variations
 @immutable
 class JsonIntlValue {
+  /// Create a translated string from a map
   const JsonIntlValue(this._messages);
 
+  /// Create a translated string from a json object
   factory JsonIntlValue.fromJson(dynamic message) {
-    final map = <JsonIntlGender, Map<JsonIntlPlurial, String>>{};
+    final map = <JsonIntlGender, Map<JsonIntlPlural, String>>{};
 
     if (message is String) {
-      map[JsonIntlGender.neutral] ??= <JsonIntlPlurial, String>{};
-      map[JsonIntlGender.neutral][JsonIntlPlurial.other] = message;
+      map[JsonIntlGender.neutral] ??= <JsonIntlPlural, String>{};
+      map[JsonIntlGender.neutral][JsonIntlPlural.other] = message;
     } else if (message is Map) {
       _loadGender(map, message);
     }
@@ -50,9 +60,14 @@ class JsonIntlValue {
     return JsonIntlValue(map);
   }
 
-  final Map<JsonIntlGender, Map<JsonIntlPlurial, String>> _messages;
+  final Map<JsonIntlGender, Map<JsonIntlPlural, String>> _messages;
 
-  String get(JsonIntlGender gender, JsonIntlPlurial plurial) {
+  /// Get the right translated strung variant depending on a gender and a count
+  String get(
+    JsonIntlGender gender,
+    JsonIntlPlural plural,
+    JsonIntlPlural direct,
+  ) {
     final p = _messages[gender] ??
         _messages[JsonIntlGender.neutral] ??
         _messages[JsonIntlGender.male] ??
@@ -62,27 +77,31 @@ class JsonIntlValue {
       return null;
     }
 
-    if (p.containsKey(plurial)) {
-      return p[plurial];
+    if (direct != null && p.containsKey(direct)) {
+      return p[direct];
     }
 
-    switch (plurial) {
-      case JsonIntlPlurial.zero:
-        return p[JsonIntlPlurial.few] ??
-            p[JsonIntlPlurial.many] ??
-            p[JsonIntlPlurial.other];
-      case JsonIntlPlurial.one:
-        return p[JsonIntlPlurial.other];
-      case JsonIntlPlurial.two:
-        return p[JsonIntlPlurial.few] ??
-            p[JsonIntlPlurial.many] ??
-            p[JsonIntlPlurial.other];
-      case JsonIntlPlurial.many:
-        return p[JsonIntlPlurial.other];
-      case JsonIntlPlurial.few:
-        return p[JsonIntlPlurial.many] ?? p[JsonIntlPlurial.other];
+    if (p.containsKey(plural)) {
+      return p[plural];
+    }
+
+    switch (plural) {
+      case JsonIntlPlural.zero:
+        return p[JsonIntlPlural.few] ??
+            p[JsonIntlPlural.many] ??
+            p[JsonIntlPlural.other];
+      case JsonIntlPlural.one:
+        return p[JsonIntlPlural.other];
+      case JsonIntlPlural.two:
+        return p[JsonIntlPlural.few] ??
+            p[JsonIntlPlural.many] ??
+            p[JsonIntlPlural.other];
+      case JsonIntlPlural.many:
+        return p[JsonIntlPlural.other];
+      case JsonIntlPlural.few:
+        return p[JsonIntlPlural.many] ?? p[JsonIntlPlural.other];
       default:
-        return p[JsonIntlPlurial.few] ?? p[JsonIntlPlurial.many];
+        return p[JsonIntlPlural.few] ?? p[JsonIntlPlural.many];
     }
   }
 
@@ -90,66 +109,77 @@ class JsonIntlValue {
     for (final key in message.keys) {
       switch (key) {
         case 'male':
-          map[JsonIntlGender.male] ??= <JsonIntlPlurial, String>{};
-          _loadPlurial(map[JsonIntlGender.male], message[key]);
+          map[JsonIntlGender.male] ??= <JsonIntlPlural, String>{};
+          _loadPlural(map[JsonIntlGender.male], message[key]);
           break;
         case 'female':
-          map[JsonIntlGender.female] ??= <JsonIntlPlurial, String>{};
-          _loadPlurial(map[JsonIntlGender.female], message[key]);
+          map[JsonIntlGender.female] ??= <JsonIntlPlural, String>{};
+          _loadPlural(map[JsonIntlGender.female], message[key]);
           break;
         case 'neutral':
-          map[JsonIntlGender.neutral] ??= <JsonIntlPlurial, String>{};
-          _loadPlurial(map[JsonIntlGender.neutral], message[key]);
+          map[JsonIntlGender.neutral] ??= <JsonIntlPlural, String>{};
+          _loadPlural(map[JsonIntlGender.neutral], message[key]);
           break;
         default:
-          map[JsonIntlGender.neutral] ??= <JsonIntlPlurial, String>{};
-          _loadPlurial(map[JsonIntlGender.neutral], message);
+          map[JsonIntlGender.neutral] ??= <JsonIntlPlural, String>{};
+          _loadPlural(map[JsonIntlGender.neutral], message);
       }
     }
   }
 
-  static void _loadPlurial(Map map, dynamic message) {
+  static void _loadPlural(Map map, dynamic message) {
     if (message is String) {
-      map[JsonIntlPlurial.other] = message;
+      map[JsonIntlPlural.other] = message;
       return;
     }
 
     for (final key in message.keys) {
       switch (key) {
         case 'zero':
-          map[JsonIntlPlurial.zero] = message[key];
+          map[JsonIntlPlural.zero] = message[key];
           break;
         case 'one':
-          map[JsonIntlPlurial.one] = message[key];
+          map[JsonIntlPlural.one] = message[key];
           break;
         case 'two':
-          map[JsonIntlPlurial.two] = message[key];
+          map[JsonIntlPlural.two] = message[key];
           break;
         case 'few':
-          map[JsonIntlPlurial.few] = message[key];
+          map[JsonIntlPlural.few] = message[key];
           break;
         case 'many':
-          map[JsonIntlPlurial.many] = message[key];
+          map[JsonIntlPlural.many] = message[key];
           break;
         default:
-          map[JsonIntlPlurial.other] = message[key];
+          map[JsonIntlPlural.other] = message[key];
       }
     }
   }
 
   @override
   String toString() {
-    var s = '{';
-    _messages.forEach((key, value) {
-      s += json.encode(key.toString().substring(15)) + ':{';
-      value.forEach((key, value) {
-        s += json.encode(key.toString().substring(16)) +
-            ':' +
-            json.encode(value) +
-            ',';
-      });
-      s = s.substring(0, s.length - 1) + '},';
-    });
-    return s.substring(0, s.length - 1) + '}';
+    final s = StringBuffer('{');
+    var first = true;
+    for (final entry in _messages.entries) {
+      if (!first) {
+        s.write(',');
+      }
+      first = false;
+      s.write(json.encode(entry.key.toString().substring(15)));
+      s.write(':{');
+      var _first = true;
+      for (final entry in entry.value.entries) {
+        if (!_first) {
+          s.write(',');
+        }
+        _first = false;
+        s.write(json.encode(entry.key.toString().substring(15)));
+        s.write(':');
+        s.write(json.encode(entry.value));
+      }
+      s.write('}');
+    }
+    s.write('}');
+    return s.toString();
   }
 }

@@ -1,44 +1,54 @@
-/*
- * Copyright (C) 2019, David PHAM-VAN <dev.nfet.net@gmail.com>
- *
- * Licensed under the Apache License, Version 2.0 (the 'License');
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an 'AS IS' BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright (c) 2020, David PHAM-VAN <dev.nfet.net@gmail.com>
+// All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
 
 // implements a part of the specification: https://mustache.github.io/mustache.5.html
 
 import 'dart:convert';
 
-import 'package:meta/meta.dart';
-
+/// The filter to apply to a variable
 typedef MustacheFilter = dynamic Function(dynamic value);
 
+/// Mustache-like converter
+///
+/// given a string like:
+/// ```dart
+/// var s = 'Hello {{ name }}, how are you?';
+/// ```
+/// this class can replace `{{ name }}` with the corresponding value
+/// in the map:
+/// ```dart
+/// var m = Mustache({'name': 'David'});
+/// m.convert(s);
+/// ```
+/// will return `Hello David, how are you?`
 class Mustache extends Converter<String, String> {
+  /// Create a [Mustache] instance that can replace strings
+  /// according to [map] and [filters]
   Mustache({
     this.map = const <String, dynamic>{},
     this.filters = const <String, MustacheFilter>{},
-    @required this.debug,
+    this.debug = false,
   })  : assert(map != null),
         assert(filters != null),
         assert(debug != null);
 
+  /// Variable replacement map
+  /// used to replace `{{ key }}` with the corresponding `value`
   final Map<String, dynamic> map;
 
+  /// Filters to apply to the map
+  /// used to apply filters. This string `{{ key | date }}` will be replaced
+  /// with `filters['date'](value)`
   final Map<String, MustacheFilter> filters;
 
+  /// Wether or not to display debug information instead of
+  /// the actual replacement
   final bool debug;
 
   final _mustache =
-      RegExp(r'({{\s*([#/^]?) *([\w\d_]*)\s*\|?\s*([\w\d\s_\|]*)}})');
+      RegExp(r'({{\s*([#/^!]?) *([\w\d_]*)\s*\|?\s*([\w\d\s_\|]*)}})');
 
   final _filter = RegExp(r'([\w\d_]+)\s*\|?\s*');
 
@@ -73,7 +83,13 @@ class Mustache extends Converter<String, String> {
     final _map = <String, dynamic>{};
     _map.addAll(map);
 
-    for (final m in _mustache.allMatches(input)) {
+    while (true) {
+      final me = _mustache.allMatches(input, start);
+      if (me.isEmpty) {
+        break;
+      }
+      final m = me.first;
+
       final modifier = m.group(2);
       final field = m.group(3);
       final _filters = <String>[];
@@ -82,6 +98,13 @@ class Mustache extends Converter<String, String> {
         for (final n in _filter.allMatches(m.group(4))) {
           _filters.add(n.group(1));
         }
+      }
+
+      // comment tag
+      if (modifier == '!') {
+        output.write(input.substring(start, m.start));
+        start = m.end;
+        continue;
       }
 
       // end tag
@@ -117,16 +140,25 @@ class Mustache extends Converter<String, String> {
       if (modifier == '#') {
         output.write(input.substring(start, m.start));
         if (_map.containsKey(field)) {
-          final dynamic value = _map[field];
+          dynamic value = _map[field];
           if (value is bool) {
             eat = !value;
           } else {
             eat = false;
           }
+          if (value is Map) {
+            value = <dynamic>[value];
+          }
           if (value is List) {
+            if (value.isEmpty) {
+              eat = true;
+              eatField = field;
+              start = m.end;
+              continue;
+            }
             context.clear();
             context.addAll(_map);
-            array = value;
+            array = <dynamic>[...value];
             _map.clear();
             _map.addAll(context);
             _map.addAll(array.first);

@@ -1,21 +1,9 @@
-/*
- * Copyright (C) 2019, David PHAM-VAN <dev.nfet.net@gmail.com>
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// Copyright (c) 2020, David PHAM-VAN <dev.nfet.net@gmail.com>
+// All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
 
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:json_intl/src/json_intl_data.dart';
@@ -79,7 +67,7 @@ void main() {
     }
 
     final json = data.toString();
-    expect(file.readAsStringSync(), json);
+    expect(json, file.readAsStringSync());
     file.writeAsStringSync(json);
   });
 
@@ -99,13 +87,12 @@ void main() {
     expect(data.translateWithMap('key3', map: map, filters: fn), 'value "123"');
   });
 
-  test('Plurial translation ar_AR', () {
+  test('Plural translation ar_AR', () {
     const locale = 'ar-AR';
     expect(
-      data.translateWithMap('key4',
-          map: map, filters: fn, count: 0, locale: locale),
-      'no value',
-    );
+        data.translateWithMap('key4',
+            map: map, filters: fn, count: 0, locale: locale),
+        'no value');
     expect(
         data.translateWithMap('key4',
             map: map, filters: fn, count: 1, locale: locale),
@@ -128,13 +115,12 @@ void main() {
         'many values');
   });
 
-  test('Plurial translation en_US', () {
+  test('Plural translation en_US', () {
     const locale = 'en-US';
     expect(
-      data.translateWithMap('key4',
-          map: map, filters: fn, count: 0, locale: locale),
-      'other values',
-    );
+        data.translateWithMap('key4',
+            map: map, filters: fn, count: 0, locale: locale),
+        'other values');
     expect(
         data.translateWithMap('key4',
             map: map, filters: fn, count: 1, locale: locale),
@@ -157,7 +143,35 @@ void main() {
         'other values');
   });
 
-  test('Plurial translation limited', () {
+  test('Plural translation en_US relaxed', () {
+    const locale = 'en-US';
+    expect(
+        data.translateWithMap('key4',
+            map: map, filters: fn, count: 0, locale: locale, strict: false),
+        'no value');
+    expect(
+        data.translateWithMap('key4',
+            map: map, filters: fn, count: 1, locale: locale, strict: false),
+        'one value');
+    expect(
+        data.translateWithMap('key4',
+            map: map, filters: fn, count: 2, locale: locale, strict: false),
+        'two values');
+    expect(
+        data.translateWithMap('key4',
+            map: map, filters: fn, count: 3, locale: locale, strict: false),
+        'other values');
+    expect(
+        data.translateWithMap('key4',
+            map: map, filters: fn, count: 100, locale: locale, strict: false),
+        'other values');
+    expect(
+        data.translateWithMap('key4',
+            map: map, filters: fn, count: -1, locale: locale, strict: false),
+        'other values');
+  });
+
+  test('Plural translation limited', () {
     expect(data.translateWithMap('key5', count: 0), '0 values');
     expect(data.translateWithMap('key5', count: 1), 'one value');
     expect(data.translateWithMap('key5', count: 2), '2 values');
@@ -174,7 +188,7 @@ void main() {
         'the girl');
   });
 
-  test('Gender and plurial translation', () {
+  test('Gender and plural translation', () {
     expect(data.translateWithMap('key7'), 'null children');
     expect(data.translateWithMap('key7', count: 1), 'a child');
     expect(data.translateWithMap('key7', count: 2), '2 children');
