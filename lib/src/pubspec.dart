@@ -6,11 +6,11 @@ class Pubspec {
   static const String name = 'json_intl';
 
   static const String description =
-      'Flutter Internationalization library based on Json files';
+      'Flutter Internationalization library based on Json files and mustache replacement strings.';
 
-  static const String versionFull = '1.0.0';
+  static const String versionFull = '1.0.1';
 
-  static const String version = '1.0.0';
+  static const String version = '1.0.1';
 
   static const String versionSmall = '1.0';
 
@@ -18,7 +18,7 @@ class Pubspec {
 
   static const int versionMinor = 0;
 
-  static const int versionPatch = 0;
+  static const int versionPatch = 1;
 
   static const int versionBuild = 0;
 
@@ -40,6 +40,8 @@ class Pubspec {
     'intl': '^0.16.0',
     'logging': '^0.11.0',
     'meta': '^1.1.0',
+    'args': '^1.5.2',
+    'path': '^1.6.4',
   };
 
   static const Map<dynamic, dynamic> dev_dependencies = <dynamic, dynamic>{
