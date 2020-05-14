@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
       // On iOS, you will have to specify the list of languages in the file
       // Info.plist
       supportedLocales: const [
+        Locale('de'),
         Locale('en'),
         Locale('fr'),
       ],
