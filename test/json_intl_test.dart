@@ -8,7 +8,7 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:json_intl/src/json_intl_data.dart';
 import 'package:json_intl/src/json_intl_value.dart';
-import 'package:json_intl/src/mustache.dart';
+import 'package:simple_mustache/simple_mustache.dart';
 
 void main() {
   JsonIntlData data;

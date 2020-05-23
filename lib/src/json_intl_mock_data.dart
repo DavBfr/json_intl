@@ -3,9 +3,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:simple_mustache/simple_mustache.dart';
+
 import 'json_intl_data.dart';
 import 'json_intl_value.dart';
-import 'mustache.dart';
 
 // ignore_for_file: public_member_api_docs
 

@@ -4,11 +4,11 @@
 // found in the LICENSE file.
 
 import 'package:flutter/widgets.dart';
+import 'package:simple_mustache/simple_mustache.dart';
 
 import 'json_intl_data.dart';
 import 'json_intl_mock_data.dart';
 import 'json_intl_value.dart';
-import 'mustache.dart';
 
 /// Main translation entry point.
 /// to get an instance of this class, call

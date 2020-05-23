@@ -10,9 +10,9 @@ import 'dart:convert';
 
 import 'package:intl/intl.dart';
 import 'package:intl/src/plural_rules.dart' as plural_rules;
+import 'package:simple_mustache/simple_mustache.dart';
 
 import 'json_intl_value.dart';
-import 'mustache.dart';
 
 class JsonIntlData {
   JsonIntlData([this._debug = false]) : assert(_debug != null);

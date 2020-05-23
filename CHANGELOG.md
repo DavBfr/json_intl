@@ -3,6 +3,7 @@
 ## 1.0.2
 
 - Add German strings to the example
+- Use external library for mustache
 
 ## 1.0.1
 

@@ -4,10 +4,10 @@
 // found in the LICENSE file.
 
 import 'package:flutter/widgets.dart';
+import 'package:simple_mustache/simple_mustache.dart';
 
 import 'json_intl.dart';
 import 'json_intl_value.dart';
-import 'mustache.dart';
 
 /// Extensions on BuildContext to shortcut the translations
 extension BuildContextJsonIntl on BuildContext {
