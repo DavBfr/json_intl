@@ -5,7 +5,11 @@
 
 DART_SRC=$(shell find . -name '*.dart')
 
-all: format
+all: example/.metadata format
+
+example/.metadata:
+	cd example; flutter create -t app --no-overwrite --org net.nfet --project-name example .
+	rm -rf example/test
 
 format: format-dart
 
@@ -42,7 +46,7 @@ fix: .dartfix $(DART_SRC)
 	pub global run dartfix --overwrite .
 
 analyze: $(DART_SRC)
-	dartanalyzer --fatal-infos --fatal-warnings --fatal-hints --fatal-lints -v .
+	flutter analyze --suppress-analytics
 
 pana: .pana
 	pub global run pana --no-warning --source path .
