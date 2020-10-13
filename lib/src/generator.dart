@@ -3,106 +3,244 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:convert';
+
 import 'package:dart_style/dart_style.dart';
 
 import 'json_intl_data.dart';
 
-String _stripExtension(String a) {
-  final i = a.lastIndexOf('.');
+/// Generate dart suorce code
+class Generator {
+  /// Create a `Generator`
+  const Generator({
+    this.defaultLocale,
+    this.className,
+    this.format = true,
+    this.intl,
+    this.mangle,
+  });
 
-  if (i >= 0) {
-    return a.substring(0, i);
+  /// The default locale
+  final String defaultLocale;
+
+  /// The class name to generate
+  final String className;
+
+  /// The localization strings
+  final Map<String, JsonIntlData> intl;
+
+  /// Format the generated dart file
+  final bool format;
+
+  /// Change keys to a random string
+  final bool mangle;
+
+  List<String> get _langs {
+    final langs = intl.entries.map<String>((e) => e.key).toSet().toList();
+    langs.sort(_langCompare);
+    return langs;
   }
 
-  return a;
-}
+  String _stripExtension(String a) {
+    final i = a.lastIndexOf('.');
 
-int _langCompare(String a, String b) {
-  a = _stripExtension(a);
-  b = _stripExtension(b);
-  return a.compareTo(b);
-}
-
-/// Generate a dart class from a list of translation keys
-String createSourceFromKeys({
-  String className,
-  bool format = true,
-  Map<String, JsonIntlData> intl,
-}) {
-  final output = <String>[];
-
-  output.add('// This file is generated automatically, do not modify');
-  output.add('');
-  output.add('/// Internationalization constants');
-  output.add('class $className {');
-
-  final keys = <String>{};
-  for (final entry in intl.entries) {
-    keys.addAll(entry.value.keys);
-  }
-  final sortedKeys = keys.toList();
-  sortedKeys.sort();
-
-  final langs = intl.entries.map<String>((e) => e.key).toSet().toList();
-  langs.sort(_langCompare);
-
-  final variables = <String>{};
-  for (final key in sortedKeys) {
-    var variable = _outputVar(key);
-
-    var index = 0;
-    final tempVariable = variable;
-    while (variables.contains(variable)) {
-      variable = '${tempVariable}_$index';
-      index++;
+    if (i >= 0) {
+      return a.substring(0, i);
     }
-    variables.add(variable);
 
-    for (final lang in langs) {
+    return a;
+  }
+
+  String _langTag(String a) {
+    final i = a.indexOf('-');
+
+    if (i >= 0) {
+      return _stripExtension(a.substring(i + 1));
+    }
+
+    return defaultLocale;
+  }
+
+  int _langCompare(String a, String b) {
+    a = _langTag(a);
+    b = _langTag(b);
+    return a.compareTo(b);
+  }
+
+  String _generateName(String key, int len) {
+    if (len > 6) {
+      key = key + len.toString();
+      len = 6;
+    }
+    return key.hashCode.toRadixString(36).substring(0, len);
+  }
+
+  Iterable<String> _createSourceFromKeys([Map<String, String> names]) sync* {
+    yield '/// Internationalization constants';
+    yield 'class $className {';
+
+    final keys = <String>{};
+    for (final entry in intl.entries) {
+      keys.addAll(entry.value.keys);
+    }
+    final sortedKeys = keys.toList();
+    sortedKeys.sort();
+
+    final generatedKeys = <String>{};
+
+    final variables = <String>{};
+    for (final key in sortedKeys) {
+      var variable = _outputVar(key);
+
+      var index = 0;
+      final tempVariable = variable;
+      while (variables.contains(variable)) {
+        variable = '${tempVariable}_$index';
+        index++;
+      }
+      variables.add(variable);
+      if (names != null) {
+        names[key] = variable;
+      }
+
+      var finalName = key;
+      if (mangle) {
+        var n = 2;
+        do {
+          finalName = _generateName(key, n);
+          n++;
+        } while (generatedKeys.contains(finalName));
+        generatedKeys.add(finalName);
+      }
+
+      for (final lang in _langs) {
+        final entry = intl[lang];
+        if (entry.keys.contains(key)) {
+          yield '  /// ${_langTag(lang)}: ${_outputStr(entry.translate(key))}';
+        } else {
+          yield '  /// ${_langTag(lang)}: *** NOT TRANSLATED ***';
+        }
+      }
+      yield '  static const $variable = ${_outputStr(finalName)};';
+      yield '';
+    }
+
+    yield '}';
+    yield '';
+
+    yield '/// Default Locale';
+    yield 'const defaultLocale$className = ${_outputStr(defaultLocale)};';
+    yield '';
+
+    yield '/// Available Locales';
+    yield 'const availableLocales$className = [';
+    for (final lang in _langs) {
+      yield '  ${_outputStr(_langTag(lang))},';
+    }
+    yield '];';
+    yield '';
+
+    yield '/// Supported Locales';
+    yield 'const supportedLocales$className = [';
+    for (final lang in _langs) {
+      yield '  Locale(${_outputStr(_langTag(lang))}),';
+    }
+    yield '];';
+  }
+
+  /// Generate a dart class from a list of translation keys
+  String createSourceFromKeys() {
+    final output = <String>[];
+
+    output.add('// This file is generated automatically, do not modify');
+    output.add('');
+    output.add('import \'dart:ui\';');
+    output.add('');
+
+    output.addAll(_createSourceFromKeys());
+
+    if (format) {
+      return DartFormatter().format(output.join('\n')).toString();
+    }
+
+    return output.join('\n');
+  }
+
+  /// Generate a dart class from a list of translation keys
+  String createBuiltinFromKeys() {
+    final output = <String>[];
+
+    output.add('// This file is generated automatically, do not modify');
+    output.add('');
+    output.add('// ignore_for_file: implementation_imports');
+    output.add('');
+    output.add('import \'dart:ui\';');
+    output.add('');
+    output.add('import \'package:json_intl/src/json_intl_value.dart\';');
+    output.add('');
+
+    final names = <String, String>{};
+    output.addAll(_createSourceFromKeys(names));
+
+    output.add('/// Data converted from json strings');
+    output.add('const data$className = {');
+
+    for (final lang in _langs) {
+      output.add('  ${_outputStr(_langTag(lang))}: {');
+
       final entry = intl[lang];
-      if (entry.keys.contains(key)) {
-        output.add('  /// $lang: ${_outputStr(entry.translate(key))}');
+      final Map<String, dynamic> data = json.decode(entry.toString());
+
+      for (final key in data.entries) {
+        output.add('$className.${names[key.key]}: JsonIntlValue({');
+        for (final gender in key.value.entries) {
+          output.add('JsonIntlGender.${gender.key}: {');
+          for (final plural in gender.value.entries) {
+            output.add(
+                'JsonIntlPlural.${plural.key}: ${_outputStr(plural.value)},');
+          }
+          output.add('},');
+        }
+        output.add('}),');
+      }
+      output.add('},');
+      output.add('');
+    }
+
+    output.add('};');
+
+    if (format) {
+      return DartFormatter().format(output.join('\n')).toString();
+    }
+
+    return output.join('\n');
+  }
+
+  String _outputVar(String s) {
+    s = s.replaceAll(RegExp(r'[^A-Za-z0-9]'), ' ');
+
+    final group = s.split(RegExp(r'\s+'));
+    final buffer = StringBuffer();
+
+    var first = true;
+    for (var word in group) {
+      if (first) {
+        first = false;
+        buffer.write(word.toLowerCase());
       } else {
-        output.add('  /// $lang: *** NOT TRANSLATED ***');
+        buffer.write(word.substring(0, 1).toUpperCase());
+        buffer.write(word.substring(1).toLowerCase());
       }
     }
-    output.add('  static const $variable = ${_outputStr(key)};');
-    output.add('');
+
+    return buffer.toString();
   }
 
-  output.add('}');
-
-  if (format) {
-    return DartFormatter().format(output.join('\n')).toString();
+  String _outputStr(String s) {
+    s = s.replaceAll(r'\', r'\\');
+    s = s.replaceAll('\n', r'\n');
+    s = s.replaceAll('\r', '');
+    s = s.replaceAll("'", r"\'");
+    return "'$s'";
   }
-
-  return output.join('\n');
-}
-
-String _outputVar(String s) {
-  s = s.replaceAll(RegExp(r'[^A-Za-z0-9]'), ' ');
-
-  final group = s.split(RegExp(r'\s+'));
-  final buffer = StringBuffer();
-
-  var first = true;
-  for (var word in group) {
-    if (first) {
-      first = false;
-      buffer.write(word.toLowerCase());
-    } else {
-      buffer.write(word.substring(0, 1).toUpperCase());
-      buffer.write(word.substring(1).toLowerCase());
-    }
-  }
-
-  return buffer.toString();
-}
-
-String _outputStr(String s) {
-  s = s.replaceAll(r'\', r'\\');
-  s = s.replaceAll('\n', r'\n');
-  s = s.replaceAll('\r', '');
-  s = s.replaceAll("'", r"\'");
-  return "'$s'";
 }

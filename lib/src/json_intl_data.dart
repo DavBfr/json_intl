@@ -23,13 +23,19 @@ class JsonIntlData {
 
   final bool _debug;
 
-  final Map<String, JsonIntlValue> _localizedValues = <String, JsonIntlValue>{};
+  final _localizedValues = <String, JsonIntlValue>{};
 
   List<String> get keys => _localizedValues.keys.toList();
 
   void append(Map<String, dynamic> map) {
     map.forEach((String key, dynamic value) {
       _localizedValues[key] = JsonIntlValue.fromJson(value);
+    });
+  }
+
+  void appendBuiltin(Map<String, JsonIntlValue> map) {
+    map.forEach((String key, JsonIntlValue value) {
+      _localizedValues[key] = value;
     });
   }
 

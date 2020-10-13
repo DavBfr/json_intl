@@ -34,6 +34,24 @@ Future<int> main(List<String> arguments) async {
       defaultsTo: 'IntlKeys',
       help: 'Destination class name',
     )
+    ..addOption(
+      'default-locale',
+      abbr: 'l',
+      defaultsTo: 'en',
+      help: 'Default generated locale',
+    )
+    ..addFlag(
+      'builtin',
+      abbr: 'b',
+      negatable: false,
+      help: 'Generate full built-in localizations',
+    )
+    ..addFlag(
+      'mangle',
+      abbr: 'm',
+      negatable: false,
+      help: 'Change keys to a random string',
+    )
     ..addFlag(
       'verbose',
       abbr: 'v',
@@ -72,6 +90,9 @@ Future<int> main(List<String> arguments) async {
   final String source = argResults['source'];
   final String destination = argResults['destination'];
   final bool verbose = argResults['verbose'];
+  final bool builtin = argResults['builtin'];
+  final bool mangle = argResults['mangle'];
+  final String defaultLocale = argResults['default-locale'];
 
   // Initialize logger
   Logger.root.level = verbose ? Level.ALL : Level.SEVERE;
@@ -103,10 +124,15 @@ Future<int> main(List<String> arguments) async {
     }
   }
 
-  final sourceData = createSourceFromKeys(
+  final gen = Generator(
     intl: intl,
     className: argResults['classname'],
+    defaultLocale: defaultLocale,
+    mangle: mangle,
   );
+
+  final sourceData =
+      builtin ? gen.createBuiltinFromKeys() : gen.createSourceFromKeys();
 
   log.info('Writing ${argResults['classname']} to $destination');
   File(destination).writeAsStringSync(sourceData);

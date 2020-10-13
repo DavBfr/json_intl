@@ -28,7 +28,7 @@ class JsonIntl {
   /// Build a mocked translation object that will always return the key
   static const mock = JsonIntl(Locale('en', 'US'), JsonIntlMockData());
 
-  /// Getthe nearest JsonIntl instance available within the [context]
+  /// Get the nearest JsonIntl instance available within the [context]
   static JsonIntl of(BuildContext context) {
     return Localizations.of<JsonIntl>(context, JsonIntl) ?? mock;
   }

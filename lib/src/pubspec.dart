@@ -8,25 +8,25 @@ class Pubspec {
   static const String description =
       'Flutter Internationalization library based on Json files and mustache replacement strings.';
 
-  static const String versionFull = '1.0.2';
+  static const String homepage = 'https://github.com/DavBfr/json_intl';
 
-  static const String version = '1.0.2';
+  static const String versionFull = '1.1.0';
 
-  static const String versionSmall = '1.0';
+  static const String version = '1.1.0';
+
+  static const String versionSmall = '1.1';
 
   static const int versionMajor = 1;
 
-  static const int versionMinor = 0;
+  static const int versionMinor = 1;
 
-  static const int versionPatch = 2;
+  static const int versionPatch = 0;
 
   static const int versionBuild = 0;
 
   static const String versionPreRelease = null;
 
   static const bool versionIsPreRelease = false;
-
-  static const String homepage = 'https://github.com/DavBfr/json_intl';
 
   static const Map<dynamic, dynamic> environment = <dynamic, dynamic>{
     'sdk': '>=2.7.0 <3.0.0',

@@ -8,5 +8,6 @@ export 'package:simple_mustache/simple_mustache.dart' show MustacheFilter;
 export 'src/extensions.dart';
 export 'src/json_intl.dart';
 export 'src/json_intl_delegate.dart';
+export 'src/json_intl_delegate_builtin.dart';
 export 'src/json_intl_value.dart' show JsonIntlGender, JsonIntlPlural;
 export 'src/translated.dart';

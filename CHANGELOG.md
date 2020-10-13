@@ -1,8 +1,9 @@
 # Changelog
 
-## 1.0.3
+## 1.1.0
 
 - Add support for hot-reload
+- Add built-in generator
 
 ## 1.0.2
 

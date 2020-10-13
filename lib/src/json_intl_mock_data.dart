@@ -17,6 +17,9 @@ class JsonIntlMockData implements JsonIntlData {
   void append(Map<String, dynamic> map) {}
 
   @override
+  void appendBuiltin(Map<String, JsonIntlValue> map) {}
+
+  @override
   List<String> get keys => const <String>[];
 
   @override

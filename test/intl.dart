@@ -1,25 +1,40 @@
 // This file is generated automatically, do not modify
 
+import 'dart:ui';
+
 /// Internationalization constants
 class IntlKeys {
-  /// strings.json: 'value'
+  /// en: 'value'
   static const key1 = 'key1';
 
-  /// strings.json: 'value {{ num }}'
+  /// en: 'value {{ num }}'
   static const key2 = 'key2';
 
-  /// strings.json: 'value {{ num | tr }}'
+  /// en: 'value {{ num | tr }}'
   static const key3 = 'key3';
 
-  /// strings.json: 'other values'
+  /// en: 'other values'
   static const key4 = 'key4';
 
-  /// strings.json: '{{ count }} values'
+  /// en: '{{ count }} values'
   static const key5 = 'key5';
 
-  /// strings.json: 'the child'
+  /// en: 'the child'
   static const key6 = 'key6';
 
-  /// strings.json: '{{ count}} children'
+  /// en: '{{ count}} children'
   static const key7 = 'key7';
 }
+
+/// Default Locale
+const defaultLocaleIntlKeys = 'en';
+
+/// Available Locales
+const availableLocalesIntlKeys = [
+  'en',
+];
+
+/// Supported Locales
+const supportedLocalesIntlKeys = [
+  Locale('en'),
+];

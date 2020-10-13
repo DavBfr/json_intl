@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 import 'json_intl_data.dart';
+import 'json_intl_value.dart';
 
 // ignore_for_file: public_member_api_docs
 
@@ -49,5 +50,22 @@ Future<void> loadMessages(
 
   for (final file in files) {
     await _addMessagesFile(into, file);
+  }
+}
+
+Future<void> loadMessagesBuiltin(
+  Locale locale,
+  Map<String, Map<String, JsonIntlValue>> data,
+  JsonIntlData into,
+  String defaultLocale,
+) async {
+  into.appendBuiltin(data[defaultLocale]);
+
+  if (data.containsKey(locale.languageCode)) {
+    into.appendBuiltin(data[locale.languageCode]);
+  }
+
+  if (data.containsKey(locale)) {
+    into.appendBuiltin(data[locale]);
   }
 }
