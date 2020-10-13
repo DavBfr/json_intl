@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3
+
+- Add support for hot-reload
+
 ## 1.0.2
 
 - Add German strings to the example

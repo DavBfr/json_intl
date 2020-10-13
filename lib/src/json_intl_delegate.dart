@@ -3,6 +3,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 import 'json_intl.dart';
@@ -46,5 +47,5 @@ class JsonIntlDelegate extends LocalizationsDelegate<JsonIntl> {
   }
 
   @override
-  bool shouldReload(JsonIntlDelegate old) => false;
+  bool shouldReload(JsonIntlDelegate old) => !kReleaseMode;
 }

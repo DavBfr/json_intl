@@ -5,6 +5,7 @@
 
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
@@ -15,7 +16,7 @@ import 'json_intl_data.dart';
 Future<void> _addMessagesFile(JsonIntlData result, String filename) async {
   try {
     const decoder = JsonDecoder();
-    final data = await rootBundle.loadString(filename);
+    final data = await rootBundle.loadString(filename, cache: kReleaseMode);
     final Map<String, dynamic> json = decoder.convert(data);
 
     assert(() {
