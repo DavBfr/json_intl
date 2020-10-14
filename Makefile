@@ -49,7 +49,7 @@ analyze: $(DART_SRC)
 	flutter analyze --suppress-analytics
 
 pana: .pana
-	pub global run pana --no-warning --source path .
+	flutter pub global run pana --no-warning --source path .
 
 .PHONY: format format-dart clean publish test fix analyze
 
