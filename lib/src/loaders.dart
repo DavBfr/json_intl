@@ -33,7 +33,7 @@ Future<void> _addMessagesFile(JsonIntlData result, String filename) async {
 
 Future<void> loadMessages(
   Locale locale,
-  List<String> availableLocales,
+  List<String>? availableLocales,
   String base,
   JsonIntlData into,
 ) async {
@@ -59,13 +59,13 @@ Future<void> loadMessagesBuiltin(
   JsonIntlData into,
   String defaultLocale,
 ) async {
-  into.appendBuiltin(data[defaultLocale]);
+  into.appendBuiltin(data[defaultLocale]!);
 
   if (data.containsKey(locale.languageCode)) {
-    into.appendBuiltin(data[locale.languageCode]);
+    into.appendBuiltin(data[locale.languageCode]!);
   }
 
   if (data.containsKey(locale)) {
-    into.appendBuiltin(data[locale]);
+    into.appendBuiltin(data[locale]!);
   }
 }

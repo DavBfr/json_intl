@@ -12,7 +12,7 @@ import 'json_intl.dart';
 class Translated extends StatelessWidget {
   const Translated(
     this.keyword, {
-    Key key,
+    Key? key,
     this.map,
     this.style,
     this.strutStyle,
@@ -24,37 +24,36 @@ class Translated extends StatelessWidget {
     this.maxLines,
     this.semanticsLabel,
     this.textWidthBasis,
-  })  : assert(keyword != null),
-        super(key: key);
+  }) : super(key: key);
 
   final String keyword;
 
-  final Map<String, dynamic> map;
+  final Map<String, dynamic>? map;
 
-  final TextStyle style;
+  final TextStyle? style;
 
-  final StrutStyle strutStyle;
+  final StrutStyle? strutStyle;
 
-  final TextAlign textAlign;
+  final TextAlign? textAlign;
 
-  final TextDirection textDirection;
+  final TextDirection? textDirection;
 
-  final bool softWrap;
+  final bool? softWrap;
 
-  final TextOverflow overflow;
+  final TextOverflow? overflow;
 
-  final double textScaleFactor;
+  final double? textScaleFactor;
 
-  final int maxLines;
+  final int? maxLines;
 
-  final String semanticsLabel;
+  final String? semanticsLabel;
 
-  final TextWidthBasis textWidthBasis;
+  final TextWidthBasis? textWidthBasis;
 
   @override
   Widget build(BuildContext context) {
     final intl = JsonIntl.of(context);
-    final data = intl.get(keyword, map);
+    final data = intl.get(keyword, map)!;
 
     return Text(
       data,

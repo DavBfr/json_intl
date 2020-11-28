@@ -11,7 +11,7 @@ import 'package:json_intl/src/json_intl_value.dart';
 import 'package:simple_mustache/simple_mustache.dart';
 
 void main() {
-  JsonIntlData data;
+  late JsonIntlData data;
   final map = <String, dynamic>{
     'num': 123,
   };

@@ -21,13 +21,13 @@ extension BuildContextJsonIntl on BuildContext {
   /// according to the current language rules.
   /// If [strict] is [false] the language rules are bent to always return the
   /// values for zero, one and two.
-  String tr(
+  String? tr(
     String key, {
-    Map<String, dynamic> map,
-    Map<String, MustacheFilter> filters,
-    JsonIntlGender gender,
-    int count,
-    bool strict,
+    Map<String, dynamic>? map,
+    Map<String, MustacheFilter>? filters,
+    JsonIntlGender? gender,
+    int? count,
+    bool? strict,
   }) {
     return JsonIntl.of(this).translate(
       key,

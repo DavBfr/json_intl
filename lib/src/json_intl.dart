@@ -35,10 +35,10 @@ class JsonIntl {
 
   /// Return the string corresponding to [key], using [map] and [filters] to
   /// replace the mustache-like variables.
-  String get(
+  String? get(
     String key, [
-    Map<String, dynamic> map,
-    Map<String, MustacheFilter> filters,
+    Map<String, dynamic>? map,
+    Map<String, MustacheFilter>? filters,
   ]) {
     if (map == null) {
       return _data.translate(key);
@@ -48,7 +48,7 @@ class JsonIntl {
       key,
       map: map,
       filters: filters,
-      locale: locale?.toLanguageTag(),
+      locale: locale.toLanguageTag(),
     );
   }
 
@@ -61,16 +61,16 @@ class JsonIntl {
   String count(
     num value,
     String key, {
-    Map<String, dynamic> map,
-    Map<String, MustacheFilter> filters,
-    bool strict,
+    Map<String, dynamic>? map,
+    Map<String, MustacheFilter>? filters,
+    bool? strict,
   }) {
     return _data.translateWithMap(
       key,
       map: map,
       filters: filters,
       count: value,
-      locale: locale?.toLanguageTag(),
+      locale: locale.toLanguageTag(),
       strict: strict,
     );
   }
@@ -82,15 +82,15 @@ class JsonIntl {
   String gender(
     JsonIntlGender gender,
     String key, {
-    Map<String, dynamic> map,
-    Map<String, MustacheFilter> filters,
+    Map<String, dynamic>? map,
+    Map<String, MustacheFilter>? filters,
   }) {
     return _data.translateWithMap(
       key,
       map: map,
       filters: filters,
       gender: gender,
-      locale: locale?.toLanguageTag(),
+      locale: locale.toLanguageTag(),
     );
   }
 
@@ -104,13 +104,13 @@ class JsonIntl {
   /// according to the current language rules.
   /// If [strict] is [false] the language rules are bent to always return the
   /// values for zero, one and two.
-  String translate(
+  String? translate(
     String key, {
-    JsonIntlGender gender,
-    int count,
-    Map<String, dynamic> map,
-    Map<String, MustacheFilter> filters,
-    bool strict,
+    JsonIntlGender? gender,
+    int? count,
+    Map<String, dynamic>? map,
+    Map<String, MustacheFilter>? filters,
+    bool? strict,
   }) {
     if (map == null && count == null && gender == null) {
       return _data.translate(key);
@@ -122,7 +122,7 @@ class JsonIntl {
       filters: filters,
       count: count,
       gender: gender,
-      locale: locale?.toLanguageTag(),
+      locale: locale.toLanguageTag(),
       strict: strict,
     );
   }

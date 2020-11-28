@@ -28,13 +28,13 @@ class JsonIntlMockData implements JsonIntlData {
   @override
   String translateWithMap(
     String key, {
-    Map<String, dynamic> map,
-    Map<String, MustacheFilter> filters,
-    num count,
-    JsonIntlGender gender,
+    Map<String, dynamic>? map,
+    Map<String, MustacheFilter>? filters,
+    num? count,
+    JsonIntlGender? gender,
     int precision = 0,
-    String locale,
-    bool strict,
+    String? locale,
+    bool? strict,
   }) =>
       key;
 }

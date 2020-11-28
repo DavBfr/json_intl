@@ -24,7 +24,7 @@ class Pubspec {
 
   static const int versionBuild = 0;
 
-  static const String versionPreRelease = null;
+  static const String? versionPreRelease = null;
 
   static const bool versionIsPreRelease = false;
 

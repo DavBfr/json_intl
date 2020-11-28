@@ -18,12 +18,10 @@ import 'loaders.dart';
 class JsonIntlDelegateBuiltin extends LocalizationsDelegate<JsonIntl> {
   /// Create the factory responsible of loading the language files
   const JsonIntlDelegateBuiltin({
-    @required this.data,
+    required this.data,
     this.defaultLocale = 'en',
     this.debug = false,
-  })  : assert(defaultLocale != null),
-        assert(debug != null),
-        assert(data != null);
+  });
 
   /// Default locale to use as fallback
   final String defaultLocale;

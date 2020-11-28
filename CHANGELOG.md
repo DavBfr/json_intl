@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0-nullsafety
+
+- Opt-in null-safety
+
 ## 1.1.0
 
 - Add support for hot-reload

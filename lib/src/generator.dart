@@ -21,22 +21,22 @@ class Generator {
   });
 
   /// The default locale
-  final String defaultLocale;
+  final String? defaultLocale;
 
   /// The class name to generate
-  final String className;
+  final String? className;
 
   /// The localization strings
-  final Map<String, JsonIntlData> intl;
+  final Map<String, JsonIntlData>? intl;
 
   /// Format the generated dart file
   final bool format;
 
   /// Change keys to a random string
-  final bool mangle;
+  final bool? mangle;
 
   List<String> get _langs {
-    final langs = intl.entries.map<String>((e) => e.key).toSet().toList();
+    final langs = intl!.entries.map<String>((e) => e.key).toSet().toList();
     langs.sort(_langCompare);
     return langs;
   }
@@ -51,7 +51,7 @@ class Generator {
     return a;
   }
 
-  String _langTag(String a) {
+  String? _langTag(String a) {
     final i = a.indexOf('-');
 
     if (i >= 0) {
@@ -62,8 +62,8 @@ class Generator {
   }
 
   int _langCompare(String a, String b) {
-    a = _langTag(a);
-    b = _langTag(b);
+    a = _langTag(a)!;
+    b = _langTag(b)!;
     return a.compareTo(b);
   }
 
@@ -75,12 +75,12 @@ class Generator {
     return key.hashCode.toRadixString(36).substring(0, len);
   }
 
-  Iterable<String> _createSourceFromKeys([Map<String, String> names]) sync* {
+  Iterable<String> _createSourceFromKeys([Map<String, String>? names]) sync* {
     yield '/// Internationalization constants';
     yield 'class $className {';
 
     final keys = <String>{};
-    for (final entry in intl.entries) {
+    for (final entry in intl!.entries) {
       keys.addAll(entry.value.keys);
     }
     final sortedKeys = keys.toList();
@@ -104,7 +104,7 @@ class Generator {
       }
 
       var finalName = key;
-      if (mangle) {
+      if (mangle!) {
         var n = 2;
         do {
           finalName = _generateName(key, n);
@@ -114,9 +114,9 @@ class Generator {
       }
 
       for (final lang in _langs) {
-        final entry = intl[lang];
+        final entry = intl![lang]!;
         if (entry.keys.contains(key)) {
-          yield '  /// ${_langTag(lang)}: ${_outputStr(entry.translate(key))}';
+          yield '  /// ${_langTag(lang)}: ${_outputStr(entry.translate(key)!)}';
         } else {
           yield '  /// ${_langTag(lang)}: *** NOT TRANSLATED ***';
         }
@@ -129,13 +129,13 @@ class Generator {
     yield '';
 
     yield '/// Default Locale';
-    yield 'const defaultLocale$className = ${_outputStr(defaultLocale)};';
+    yield 'const defaultLocale$className = ${_outputStr(defaultLocale!)};';
     yield '';
 
     yield '/// Available Locales';
     yield 'const availableLocales$className = [';
     for (final lang in _langs) {
-      yield '  ${_outputStr(_langTag(lang))},';
+      yield '  ${_outputStr(_langTag(lang)!)},';
     }
     yield '];';
     yield '';
@@ -143,7 +143,7 @@ class Generator {
     yield '/// Supported Locales';
     yield 'const supportedLocales$className = [';
     for (final lang in _langs) {
-      yield '  Locale(${_outputStr(_langTag(lang))}),';
+      yield '  Locale(${_outputStr(_langTag(lang)!)}),';
     }
     yield '];';
   }
@@ -186,9 +186,9 @@ class Generator {
     output.add('const data$className = {');
 
     for (final lang in _langs) {
-      output.add('  ${_outputStr(_langTag(lang))}: {');
+      output.add('  ${_outputStr(_langTag(lang)!)}: {');
 
-      final entry = intl[lang];
+      final entry = intl![lang];
       final Map<String, dynamic> data = json.decode(entry.toString());
 
       for (final key in data.entries) {

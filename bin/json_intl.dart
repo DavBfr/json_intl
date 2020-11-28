@@ -88,11 +88,11 @@ Future<int> main(List<String> arguments) async {
   }
 
   final String source = argResults['source'];
-  final String destination = argResults['destination'];
+  final String? destination = argResults['destination'];
   final bool verbose = argResults['verbose'];
-  final bool builtin = argResults['builtin'];
-  final bool mangle = argResults['mangle'];
-  final String defaultLocale = argResults['default-locale'];
+  final bool? builtin = argResults['builtin'];
+  final bool? mangle = argResults['mangle'];
+  final String? defaultLocale = argResults['default-locale'];
 
   // Initialize logger
   Logger.root.level = verbose ? Level.ALL : Level.SEVERE;
@@ -109,7 +109,7 @@ Future<int> main(List<String> arguments) async {
   }
 
   log.info('Checking output directory');
-  Directory(p.basename(destination));
+  Directory(p.basename(destination!));
   const decoder = JsonDecoder();
   final intl = <String, JsonIntlData>{};
 
@@ -132,7 +132,7 @@ Future<int> main(List<String> arguments) async {
   );
 
   final sourceData =
-      builtin ? gen.createBuiltinFromKeys() : gen.createSourceFromKeys();
+      builtin! ? gen.createBuiltinFromKeys() : gen.createSourceFromKeys();
 
   log.info('Writing ${argResults['classname']} to $destination');
   File(destination).writeAsStringSync(sourceData);

@@ -52,8 +52,8 @@ class JsonIntlValue {
 
     if (message is String) {
       map[JsonIntlGender.neutral] ??= <JsonIntlPlural, String>{};
-      map[JsonIntlGender.neutral][JsonIntlPlural.other] = message;
-    } else if (message is Map) {
+      map[JsonIntlGender.neutral]![JsonIntlPlural.other] = message;
+    } else if (message is Map<String, dynamic>) {
       _loadGender(map, message);
     }
 
@@ -62,13 +62,13 @@ class JsonIntlValue {
 
   final Map<JsonIntlGender, Map<JsonIntlPlural, String>> _messages;
 
-  /// Get the right translated strung variant depending on a gender and a count
-  String get(
-    JsonIntlGender gender,
+  /// Get the right translated string variant depending on a gender and a count
+  String? get(
+    JsonIntlGender? gender,
     JsonIntlPlural plural,
-    JsonIntlPlural direct,
+    JsonIntlPlural? direct,
   ) {
-    final p = _messages[gender] ??
+    final p = _messages[gender!] ??
         _messages[JsonIntlGender.neutral] ??
         _messages[JsonIntlGender.male] ??
         _messages[JsonIntlGender.female];

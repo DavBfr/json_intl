@@ -2,27 +2,28 @@ name: json_intl
 description: Flutter Internationalization library based on Json files and mustache replacement strings.
 homepage: https://github.com/DavBfr/json_intl
 author: David PHAM-VAN <dev.nfet.net@gmail.com>
-version: 1.1.0
+version: 2.0.0-nullsafety
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: '>=2.12.0-29.10.beta <3.0.0'
+  flutter: ">=1.12.13+hotfix.5 <2.0.0"
 
 dependencies:
+  args: ^1.5.2
+  dart_style: ^1.2.9
   flutter:
     sdk: flutter
-  dart_style: ^1.2.9
-  intl: ^0.16.0
-  logging: ^0.11.0
+  intl: ^0.17.0-nullsafety
+  logging: ^1.0.0-nullsafety
   meta: ^1.1.0
-  args: ^1.5.2
   path: ^1.6.4
-  simple_mustache: ^1.0.0
+  simple_mustache: ^2.0.0-nullsafety
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  pubspec_extract: ^1.2.0
-  pedantic: ^1.8.0
+  pedantic:
+  pubspec_extract:
 
 flutter:
 

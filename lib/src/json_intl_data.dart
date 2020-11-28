@@ -15,11 +15,11 @@ import 'package:simple_mustache/simple_mustache.dart';
 import 'json_intl_value.dart';
 
 class JsonIntlData {
-  JsonIntlData([this._debug = false]) : assert(_debug != null);
+  JsonIntlData([this._debug = false]);
 
-  static String _cachedPluralLocale;
+  static String? _cachedPluralLocale;
 
-  static plural_rules.PluralRule _cachedPluralRule;
+  static plural_rules.PluralRule? _cachedPluralRule;
 
   final bool _debug;
 
@@ -39,10 +39,10 @@ class JsonIntlData {
     });
   }
 
-  String translate(String key) {
+  String? translate(String key) {
     assert(_localizedValues.keys.contains(key), 'The key $key was not found');
 
-    final message = _localizedValues[key];
+    final message = _localizedValues[key]!;
     var value = message.get(
       JsonIntlGender.neutral,
       JsonIntlPlural.other,
@@ -59,7 +59,7 @@ class JsonIntlData {
     return value;
   }
 
-  static plural_rules.PluralRule _pluralRule(
+  static plural_rules.PluralRule? _pluralRule(
       String locale, num howMany, int precision) {
     plural_rules.startRuleEvaluation(howMany, precision);
     final verifiedLocale = Intl.verifiedLocale(
@@ -76,13 +76,13 @@ class JsonIntlData {
 
   String translateWithMap(
     String key, {
-    Map<String, dynamic> map,
-    Map<String, MustacheFilter> filters,
-    num count,
-    JsonIntlGender gender,
+    Map<String, dynamic>? map,
+    Map<String, MustacheFilter>? filters,
+    num? count,
+    JsonIntlGender? gender,
     int precision = 0,
-    String locale,
-    bool strict,
+    String? locale,
+    bool? strict,
   }) {
     assert(_localizedValues.keys.contains(key), 'The key $key was not found');
 
@@ -97,7 +97,7 @@ class JsonIntlData {
     final message = _localizedValues[key];
 
     var plural = JsonIntlPlural.other;
-    JsonIntlPlural direct;
+    JsonIntlPlural? direct;
 
     if (count != null) {
       if (count == 0) {
@@ -108,7 +108,7 @@ class JsonIntlData {
         direct = JsonIntlPlural.two;
       }
 
-      final pluralRule = _pluralRule(locale, count, precision);
+      final pluralRule = _pluralRule(locale!, count, precision);
       if (pluralRule != null) {
         switch (pluralRule.call()) {
           case plural_rules.PluralCase.ZERO:
@@ -133,11 +133,11 @@ class JsonIntlData {
       }
     }
 
-    var result = mustache.convert(message.get(
+    var result = mustache.convert(message!.get(
       gender,
       plural,
       _strict ? null : direct,
-    ));
+    )!);
 
     assert(() {
       if (_debug) {

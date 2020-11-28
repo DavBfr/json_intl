@@ -19,8 +19,7 @@ class JsonIntlDelegate extends LocalizationsDelegate<JsonIntl> {
     this.availableLocales,
     this.base = 'assets/intl',
     this.debug = false,
-  })  : assert(debug != null),
-        assert(base != null);
+  });
 
   /// The assets path where to find the localization files
   final String base;
@@ -32,7 +31,7 @@ class JsonIntlDelegate extends LocalizationsDelegate<JsonIntl> {
 
   /// List of locales that can be used by the application. If null, the locales
   /// will be detedected automatically.
-  final List<String> availableLocales;
+  final List<String>? availableLocales;
 
   @override
   bool isSupported(Locale locale) {
