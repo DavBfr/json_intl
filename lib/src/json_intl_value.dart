@@ -68,7 +68,7 @@ class JsonIntlValue {
     JsonIntlPlural plural,
     JsonIntlPlural? direct,
   ) {
-    final p = _messages[gender!] ??
+    final p = _messages[gender] ??
         _messages[JsonIntlGender.neutral] ??
         _messages[JsonIntlGender.male] ??
         _messages[JsonIntlGender.female];

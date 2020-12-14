@@ -60,7 +60,7 @@ class JsonIntlData {
   }
 
   static plural_rules.PluralRule? _pluralRule(
-      String locale, num howMany, int precision) {
+      String? locale, num howMany, int precision) {
     plural_rules.startRuleEvaluation(howMany, precision);
     final verifiedLocale = Intl.verifiedLocale(
         locale, plural_rules.localeHasPluralRules,
@@ -108,7 +108,7 @@ class JsonIntlData {
         direct = JsonIntlPlural.two;
       }
 
-      final pluralRule = _pluralRule(locale!, count, precision);
+      final pluralRule = _pluralRule(locale, count, precision);
       if (pluralRule != null) {
         switch (pluralRule.call()) {
           case plural_rules.PluralCase.ZERO:

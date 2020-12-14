@@ -10,47 +10,46 @@ class Pubspec {
 
   static const String homepage = 'https://github.com/DavBfr/json_intl';
 
-  static const String versionFull = '1.1.0';
+  static const String versionFull = '2.0.0-nullsafety';
 
-  static const String version = '1.1.0';
+  static const String version = '2.0.0';
 
-  static const String versionSmall = '1.1';
+  static const String versionSmall = '2.0';
 
-  static const int versionMajor = 1;
+  static const int versionMajor = 2;
 
-  static const int versionMinor = 1;
+  static const int versionMinor = 0;
 
   static const int versionPatch = 0;
 
   static const int versionBuild = 0;
 
-  static const String? versionPreRelease = null;
+  static const String versionPreRelease = 'nullsafety';
 
-  static const bool versionIsPreRelease = false;
+  static const bool versionIsPreRelease = true;
 
   static const Map<dynamic, dynamic> environment = <dynamic, dynamic>{
-    'sdk': '>=2.7.0 <3.0.0',
+    'sdk': '>=2.12.0-29.10.beta <3.0.0',
+    'flutter': '>=1.12.13+hotfix.5 <2.0.0',
   };
 
   static const Map<dynamic, dynamic> dependencies = <dynamic, dynamic>{
+    'args': '^1.5.2',
+    'dart_style': '^1.2.9',
     'flutter': <dynamic, dynamic>{
       'sdk': 'flutter',
     },
-    'dart_style': '^1.2.9',
-    'intl': '^0.16.0',
-    'logging': '^0.11.0',
-    'meta': '^1.1.0',
-    'args': '^1.5.2',
-    'path': '^1.6.4',
-    'simple_mustache': '^1.0.0',
+    'intl': '^0.17.0-nullsafety',
+    'logging': '^1.0.0-nullsafety',
+    'path': '^1.8.0-nullsafety.3',
+    'simple_mustache': '^2.0.0-nullsafety',
   };
 
   static const Map<dynamic, dynamic> dev_dependencies = <dynamic, dynamic>{
     'flutter_test': <dynamic, dynamic>{
       'sdk': 'flutter',
     },
-    'pubspec_extract': '^1.2.0',
-    'pedantic': '^1.8.0',
+    'pedantic': '^1.10.0-nullsafety',
   };
 
   static const Map<dynamic, dynamic> executables = <dynamic, dynamic>{

@@ -78,3 +78,4 @@ pubspec.lock
 node_modules
 package-lock.json
 lcov.info
+.pe

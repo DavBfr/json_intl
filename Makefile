@@ -5,11 +5,11 @@
 
 DART_SRC=$(shell find . -name '*.dart')
 
-all: example/.metadata format
+all: example/.metadata format lib/src/pubspec.dart
 
 example/.metadata:
 	cd example; flutter create -t app --no-overwrite --org net.nfet --project-name example .
-	rm -rf example/test
+	rm -rf example/test example/integration_test
 
 format: format-dart
 
@@ -53,5 +53,9 @@ pana: .pana
 
 .PHONY: format format-dart clean publish test fix analyze
 
-lib/src/pubspec.dart: pubspec.yaml
-	flutter pub run pubspec_extract -s $^ -d $@
+.pe:
+	dart pub global activate pubspec_extract
+	touch $@
+
+lib/src/pubspec.dart: pubspec.yaml .pe
+	pubspec_extract -s $^ -d $@
