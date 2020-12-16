@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 import 'package:intl/src/plural_rules.dart' as plural_rules;
 import 'package:simple_mustache/simple_mustache.dart';
 
+import 'exception.dart';
 import 'json_intl_value.dart';
 
 class JsonIntlData {
@@ -39,15 +40,43 @@ class JsonIntlData {
     });
   }
 
-  String? translate(String key) {
-    assert(_localizedValues.keys.contains(key), 'The key $key was not found');
+  String translate(String key) {
+    final message = _localizedValues[key];
+    if (message == null) {
+      if (_debug) {
+        var debug = false;
+        assert(() {
+          debug = true;
+          return true;
+        }());
+        if (debug) {
+          return '[$key]!!';
+        }
+      }
 
-    final message = _localizedValues[key]!;
+      throw JsonIntlException('The translation key [$key] was not found');
+    }
+
     var value = message.get(
       JsonIntlGender.neutral,
       JsonIntlPlural.other,
       null,
     );
+    if (value == null) {
+      if (_debug) {
+        var debug = false;
+        assert(() {
+          debug = true;
+          return true;
+        }());
+        if (debug) {
+          return '[$key]!!';
+        }
+      }
+
+      throw JsonIntlException(
+          'Unable to build a translation for [$key]\n  Gender: neutral\n  Plurial: other');
+    }
 
     assert(() {
       if (_debug) {
@@ -56,7 +85,7 @@ class JsonIntlData {
       return true;
     }());
 
-    return value;
+    return value!;
   }
 
   static plural_rules.PluralRule? _pluralRule(
@@ -84,8 +113,6 @@ class JsonIntlData {
     String? locale,
     bool? strict,
   }) {
-    assert(_localizedValues.keys.contains(key), 'The key $key was not found');
-
     map ??= <String, dynamic>{'count': count};
     final _strict = strict ?? true;
 
@@ -95,6 +122,20 @@ class JsonIntlData {
       debug: _debug,
     );
     final message = _localizedValues[key];
+    if (message == null) {
+      if (_debug) {
+        var debug = false;
+        assert(() {
+          debug = true;
+          return true;
+        }());
+        if (debug) {
+          return '[$key]!!';
+        }
+      }
+
+      throw JsonIntlException('The translation key [$key] was not found');
+    }
 
     var plural = JsonIntlPlural.other;
     JsonIntlPlural? direct;
@@ -133,11 +174,27 @@ class JsonIntlData {
       }
     }
 
-    var result = mustache.convert(message!.get(
+    final value = message.get(
       gender,
       plural,
       _strict ? null : direct,
-    )!);
+    );
+    if (value == null) {
+      if (_debug) {
+        var debug = false;
+        assert(() {
+          debug = true;
+          return true;
+        }());
+        if (debug) {
+          return '[$key]!!';
+        }
+      }
+      throw JsonIntlException(
+          'Unable to build a translation for [$key]\n  Gender: $gender\n  Plurial: $plural\n  Direct: $direct\n  Count: $count\n  Map: $map');
+    }
+
+    var result = mustache.convert(value);
 
     assert(() {
       if (_debug) {

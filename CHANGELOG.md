@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0-nullsafety.1
+
+- Improve null-safety API
+
 ## 2.0.0-nullsafety
 
 - Opt-in null-safety

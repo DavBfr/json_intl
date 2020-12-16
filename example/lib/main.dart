@@ -18,7 +18,10 @@ class MyApp extends StatelessWidget {
           JsonIntl.of(context).get('app_name'),
       home: MyHomePage(),
       localizationsDelegates: const [
-        JsonIntlDelegate(), // We add the intl delegate here
+        JsonIntlDelegate(
+          debug: false, // Set to true to display the translation keys
+          availableLocales: ['fr', 'de'], // Not including the default language
+        ), // We add the intl delegate here
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],

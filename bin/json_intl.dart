@@ -3,6 +3,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+// @dart=2.9
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -10,8 +12,23 @@ import 'package:args/args.dart';
 import 'package:json_intl/src/json_intl_data.dart';
 import 'package:json_intl/src/generator.dart';
 import 'package:json_intl/src/pubspec.dart';
-import 'package:logging/logging.dart';
 import 'package:path/path.dart' as p;
+
+class Logger {
+  const Logger(this.verbose);
+
+  final bool verbose;
+
+  void info(String message) {
+    if (verbose) {
+      print(message);
+    }
+  }
+
+  void severe(String message) {
+    print(message);
+  }
+}
 
 Future<int> main(List<String> arguments) async {
   // Parse CLI arguments
@@ -88,18 +105,14 @@ Future<int> main(List<String> arguments) async {
   }
 
   final String source = argResults['source'];
-  final String? destination = argResults['destination'];
+  final String /*?*/ destination = argResults['destination'];
   final bool verbose = argResults['verbose'];
-  final bool? builtin = argResults['builtin'];
-  final bool? mangle = argResults['mangle'];
-  final String? defaultLocale = argResults['default-locale'];
+  final bool /*?*/ builtin = argResults['builtin'];
+  final bool /*?*/ mangle = argResults['mangle'];
+  final String /*?*/ defaultLocale = argResults['default-locale'];
 
   // Initialize logger
-  Logger.root.level = verbose ? Level.ALL : Level.SEVERE;
-  Logger.root.onRecord.listen((LogRecord rec) {
-    print('${rec.level.name}: ${rec.time}: ${rec.message}');
-  });
-  final log = Logger('main');
+  final log = Logger(verbose);
 
   log.info('Checking source directory exists');
   final dirSource = Directory(source);
@@ -109,7 +122,7 @@ Future<int> main(List<String> arguments) async {
   }
 
   log.info('Checking output directory');
-  Directory(p.basename(destination!));
+  Directory(p.basename(destination));
   const decoder = JsonDecoder();
   final intl = <String, JsonIntlData>{};
 
@@ -132,7 +145,7 @@ Future<int> main(List<String> arguments) async {
   );
 
   final sourceData =
-      builtin! ? gen.createBuiltinFromKeys() : gen.createSourceFromKeys();
+      builtin ? gen.createBuiltinFromKeys() : gen.createSourceFromKeys();
 
   log.info('Writing ${argResults['classname']} to $destination');
   File(destination).writeAsStringSync(sourceData);

@@ -13,30 +13,30 @@ import 'json_intl_data.dart';
 class Generator {
   /// Create a `Generator`
   const Generator({
-    this.defaultLocale,
-    this.className,
+    this.defaultLocale = 'en',
+    this.className = 'IntlKeys',
     this.format = true,
-    this.intl,
-    this.mangle,
+    required this.intl,
+    this.mangle = false,
   });
 
   /// The default locale
-  final String? defaultLocale;
+  final String defaultLocale;
 
   /// The class name to generate
-  final String? className;
+  final String className;
 
   /// The localization strings
-  final Map<String, JsonIntlData>? intl;
+  final Map<String, JsonIntlData> intl;
 
   /// Format the generated dart file
   final bool format;
 
   /// Change keys to a random string
-  final bool? mangle;
+  final bool mangle;
 
   List<String> get _langs {
-    final langs = intl!.entries.map<String>((e) => e.key).toSet().toList();
+    final langs = intl.entries.map<String>((e) => e.key).toSet().toList();
     langs.sort(_langCompare);
     return langs;
   }
@@ -80,7 +80,7 @@ class Generator {
     yield 'class $className {';
 
     final keys = <String>{};
-    for (final entry in intl!.entries) {
+    for (final entry in intl.entries) {
       keys.addAll(entry.value.keys);
     }
     final sortedKeys = keys.toList();
@@ -104,7 +104,7 @@ class Generator {
       }
 
       var finalName = key;
-      if (mangle!) {
+      if (mangle) {
         var n = 2;
         do {
           finalName = _generateName(key, n);
@@ -114,9 +114,9 @@ class Generator {
       }
 
       for (final lang in _langs) {
-        final entry = intl![lang]!;
+        final entry = intl[lang]!;
         if (entry.keys.contains(key)) {
-          yield '  /// ${_langTag(lang)}: ${_outputStr(entry.translate(key)!)}';
+          yield '  /// ${_langTag(lang)}: ${_outputStr(entry.translate(key))}';
         } else {
           yield '  /// ${_langTag(lang)}: *** NOT TRANSLATED ***';
         }
@@ -129,7 +129,7 @@ class Generator {
     yield '';
 
     yield '/// Default Locale';
-    yield 'const defaultLocale$className = ${_outputStr(defaultLocale!)};';
+    yield 'const defaultLocale$className = ${_outputStr(defaultLocale)};';
     yield '';
 
     yield '/// Available Locales';
@@ -188,7 +188,7 @@ class Generator {
     for (final lang in _langs) {
       output.add('  ${_outputStr(_langTag(lang)!)}: {');
 
-      final entry = intl![lang];
+      final entry = intl[lang]!;
       final Map<String, dynamic> data = json.decode(entry.toString());
 
       for (final key in data.entries) {

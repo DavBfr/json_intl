@@ -10,7 +10,7 @@ class Pubspec {
 
   static const String homepage = 'https://github.com/DavBfr/json_intl';
 
-  static const String versionFull = '2.0.0-nullsafety';
+  static const String versionFull = '2.0.0-nullsafety.1';
 
   static const String version = '2.0.0';
 
@@ -40,9 +40,14 @@ class Pubspec {
       'sdk': 'flutter',
     },
     'intl': '^0.17.0-nullsafety',
-    'logging': '^1.0.0-nullsafety',
     'path': '^1.8.0-nullsafety.3',
     'simple_mustache': '^2.0.0-nullsafety',
+  };
+
+  static const Map<dynamic, dynamic> dependency_overrides = <dynamic, dynamic>{
+    'args': <dynamic, dynamic>{
+      'git': 'https://github.com/dart-lang/args',
+    },
   };
 
   static const Map<dynamic, dynamic> dev_dependencies = <dynamic, dynamic>{
@@ -50,6 +55,7 @@ class Pubspec {
       'sdk': 'flutter',
     },
     'pedantic': '^1.10.0-nullsafety',
+    'test': '^1.16.0-nullsafety',
   };
 
   static const Map<dynamic, dynamic> executables = <dynamic, dynamic>{

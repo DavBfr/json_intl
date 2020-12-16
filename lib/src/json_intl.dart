@@ -35,7 +35,7 @@ class JsonIntl {
 
   /// Return the string corresponding to [key], using [map] and [filters] to
   /// replace the mustache-like variables.
-  String? get(
+  String get(
     String key, [
     Map<String, dynamic>? map,
     Map<String, MustacheFilter>? filters,
@@ -104,7 +104,7 @@ class JsonIntl {
   /// according to the current language rules.
   /// If [strict] is [false] the language rules are bent to always return the
   /// values for zero, one and two.
-  String? translate(
+  String translate(
     String key, {
     JsonIntlGender? gender,
     int? count,

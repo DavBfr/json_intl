@@ -53,7 +53,7 @@ class Translated extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final intl = JsonIntl.of(context);
-    final data = intl.get(keyword, map)!;
+    final data = intl.get(keyword, map);
 
     return Text(
       data,
