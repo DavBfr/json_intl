@@ -40,7 +40,8 @@ Future<void> loadMessages(
     files.add('$base/strings-${locale.languageCode}.json');
   }
 
-  if (availableLocales == null || availableLocales.contains(locale)) {
+  if (availableLocales == null ||
+      availableLocales.contains(locale.toString())) {
     files.add('$base/strings-$locale.json');
   }
 

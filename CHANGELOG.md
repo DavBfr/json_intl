@@ -4,6 +4,7 @@
 
 - Update dependencies
 - Log all message using the logging package
+- Fix issue with availableLocales
 
 ## 2.0.0
 
