@@ -3,6 +3,7 @@
 ## 2.1.0
 
 - Update dependencies
+- Log all message using the logging package
 
 ## 2.0.0
 

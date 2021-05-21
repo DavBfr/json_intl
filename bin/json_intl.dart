@@ -9,26 +9,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:json_intl/src/json_intl_data.dart';
 import 'package:json_intl/src/generator.dart';
+import 'package:json_intl/src/json_intl_data.dart';
 import 'package:json_intl/src/pubspec.dart';
+import 'package:logging/logging.dart';
 import 'package:path/path.dart' as p;
-
-class Logger {
-  const Logger(this.verbose);
-
-  final bool verbose;
-
-  void info(String message) {
-    if (verbose) {
-      print(message);
-    }
-  }
-
-  void severe(String message) {
-    print(message);
-  }
-}
 
 Future<int> main(List<String> arguments) async {
   // Parse CLI arguments
@@ -112,7 +97,14 @@ Future<int> main(List<String> arguments) async {
   final String /*?*/ defaultLocale = argResults['default-locale'];
 
   // Initialize logger
-  final log = Logger(verbose);
+  final log = Logger('json_intl');
+
+  Logger.root
+    ..onRecord.listen((record) {
+      stderr.writeln(
+          '[${record.loggerName}] ${record.level.name}: ${record.message}');
+    })
+    ..level = verbose ? Level.ALL : Level.WARNING;
 
   log.info('Checking source directory exists');
   final dirSource = Directory(source);

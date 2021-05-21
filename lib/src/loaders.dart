@@ -11,6 +11,7 @@ import 'package:flutter/widgets.dart';
 
 import 'json_intl_data.dart';
 import 'json_intl_value.dart';
+import 'log.dart';
 
 // ignore_for_file: public_member_api_docs
 
@@ -19,15 +20,10 @@ Future<void> _addMessagesFile(JsonIntlData result, String filename) async {
     const decoder = JsonDecoder();
     final data = await rootBundle.loadString(filename, cache: kReleaseMode);
     final Map<String, dynamic> json = decoder.convert(data);
-
-    assert(() {
-      print('Loaded $filename');
-      return true;
-    }());
-
+    log.info('Loaded $filename');
     result.append(json);
-  } catch (e) {
-    print('Language file not found $filename');
+  } catch (_) {
+    log.info('Language file not found $filename');
   }
 }
 
