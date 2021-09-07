@@ -52,7 +52,7 @@ Future<void> loadMessages(
 
 Future<void> loadMessagesBuiltin(
   Locale locale,
-  Map<String, Map<String, JsonIntlValue>> data,
+  Map<String, Map<Symbol, JsonIntlValue>> data,
   JsonIntlData into,
   String defaultLocale,
 ) async {

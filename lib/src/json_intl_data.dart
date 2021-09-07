@@ -24,23 +24,23 @@ class JsonIntlData {
 
   final bool _debug;
 
-  final _localizedValues = <String, JsonIntlValue>{};
+  final _localizedValues = <Symbol, JsonIntlValue>{};
 
-  List<String> get keys => _localizedValues.keys.toList();
+  List<Symbol> get keys => _localizedValues.keys.toList();
 
   void append(Map<String, dynamic> map) {
     map.forEach((String key, dynamic value) {
-      _localizedValues[key] = JsonIntlValue.fromJson(value);
+      _localizedValues[Symbol(key)] = JsonIntlValue.fromJson(value);
     });
   }
 
-  void appendBuiltin(Map<String, JsonIntlValue> map) {
-    map.forEach((String key, JsonIntlValue value) {
+  void appendBuiltin(Map<Symbol, JsonIntlValue> map) {
+    map.forEach((Symbol key, JsonIntlValue value) {
       _localizedValues[key] = value;
     });
   }
 
-  String translate(String key) {
+  String translate(Symbol key) {
     final message = _localizedValues[key];
     if (message == null) {
       if (_debug) {
@@ -104,7 +104,7 @@ class JsonIntlData {
   }
 
   String translateWithMap(
-    String key, {
+    Symbol key, {
     Map<String, dynamic>? map,
     Map<String, MustacheFilter>? filters,
     num? count,
@@ -215,7 +215,8 @@ class JsonIntlData {
         s.write(',');
       }
       first = false;
-      s.write(json.encode(entry.key));
+      final k = entry.key.toString();
+      s.write(json.encode(k.substring(8, k.length - 2)));
       s.write(':');
       s.write(entry.value.toString());
     }

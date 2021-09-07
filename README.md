@@ -67,13 +67,13 @@ The content of the files is a json dictionary containing a `key` / `value` list:
 to get the values in the dart code, use:
 
 ```dart
-JsonIntl.of(context).get('app_name');
+JsonIntl.of(context).get(#app_name);
 ```
 
 or
 
 ```dart
-context.tr('app_name');
+context.tr(#app_name);
 ```
 
 ### Plurals
@@ -94,7 +94,7 @@ Other values are supported for specific values depending on the language: `"zero
 To use it in the application:
 
 ```dart
-JsonIntl.of(context).count(itemCount, 'cart');
+JsonIntl.of(context).count(itemCount, #cart);
 ```
 
 The variable `{{ count }}` is automatically populated with `itemCount`.
@@ -116,7 +116,7 @@ The json entry will look like this:
 To use it in the application:
 
 ```dart
-JsonIntl.of(context).gender(JsonIntlGender.female, 'child');
+JsonIntl.of(context).gender(JsonIntlGender.female, #child);
 ```
 
 ### Mixing Plural and Gender
@@ -145,7 +145,7 @@ The json entry will look like this:
 To use it in the application:
 
 ```dart
-JsonIntl.of(context).translate('child', gender: JsonIntlGender.female, count: 3);
+JsonIntl.of(context).translate(#child, gender: JsonIntlGender.female, count: 3);
 ```
 
 ## Generating the translations

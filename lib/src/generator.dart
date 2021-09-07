@@ -9,6 +9,13 @@ import 'package:dart_style/dart_style.dart';
 
 import 'json_intl_data.dart';
 
+extension _SymbolString on Symbol {
+  String getString() {
+    final s = toString();
+    return s.substring(8, s.length - 2);
+  }
+}
+
 /// Generate dart suorce code
 class Generator {
   /// Create a `Generator`
@@ -72,24 +79,29 @@ class Generator {
       key = key + len.toString();
       len = 6;
     }
-    return key.hashCode.toRadixString(36).substring(0, len);
+    var radix = key.hashCode.toRadixString(36);
+    if (radix.codeUnitAt(0) < 65) {
+      radix = 'n' + radix;
+    }
+    return radix.substring(0, len);
   }
 
   Iterable<String> _createSourceFromKeys([Map<String, String>? names]) sync* {
     yield '/// Internationalization constants';
     yield 'class $className {';
 
-    final keys = <String>{};
+    final keys = <Symbol>{};
     for (final entry in intl.entries) {
       keys.addAll(entry.value.keys);
     }
     final sortedKeys = keys.toList();
-    sortedKeys.sort();
+    sortedKeys.sort((a, b) => a.getString().compareTo(b.getString()));
 
     final generatedKeys = <String>{};
 
     final variables = <String>{};
-    for (final key in sortedKeys) {
+    for (final _key in sortedKeys) {
+      final key = _key.getString();
       var variable = _outputVar(key);
 
       var index = 0;
@@ -115,13 +127,13 @@ class Generator {
 
       for (final lang in _langs) {
         final entry = intl[lang]!;
-        if (entry.keys.contains(key)) {
-          yield '  /// ${_langTag(lang)}: ${_outputStr(entry.translate(key))}';
+        if (entry.keys.contains(_key)) {
+          yield '  /// ${_langTag(lang)}: ${_outputStr(entry.translate(_key))}';
         } else {
           yield '  /// ${_langTag(lang)}: *** NOT TRANSLATED ***';
         }
       }
-      yield '  static const $variable = ${_outputStr(finalName)};';
+      yield '  static const $variable = #$finalName;';
       yield '';
     }
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.0
+
+- Translation keys are now Symbols
+
 ## 2.1.0
 
 - Update dependencies

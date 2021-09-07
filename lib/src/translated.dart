@@ -26,7 +26,7 @@ class Translated extends StatelessWidget {
     this.textWidthBasis,
   }) : super(key: key);
 
-  final String keyword;
+  final Symbol keyword;
 
   final Map<String, dynamic>? map;
 

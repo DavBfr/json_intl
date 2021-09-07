@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       // This replaces your [title] attribute, as we need a context to get the
       // translations
       onGenerateTitle: (BuildContext context) =>
-          JsonIntl.of(context).get('app_name'),
+          JsonIntl.of(context).get(#app_name),
       home: MyHomePage(),
       localizationsDelegates: const [
         JsonIntlDelegate(
@@ -56,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         // A simple translated title
-        title: Text(JsonIntl.of(context).get('title')),
+        title: Text(JsonIntl.of(context).get(#title)),
       ),
       body: Center(
         child: Column(
@@ -65,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
             // A string translated depending on a number to count something
             Text(JsonIntl.of(context).count(
               _counter,
-              'pushed',
+              #pushed,
               strict: false,
             )),
           ],
@@ -74,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         // We can use the BuildContext extension too:
-        tooltip: context.tr('increment'),
+        tooltip: context.tr(#increment),
         child: const Icon(Icons.add),
       ),
     );

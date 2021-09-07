@@ -27,7 +27,7 @@ class JsonIntlDelegateBuiltin extends LocalizationsDelegate<JsonIntl> {
   final String defaultLocale;
 
   /// The translation data
-  final Map<String, Map<String, JsonIntlValue>> data;
+  final Map<String, Map<Symbol, JsonIntlValue>> data;
 
   /// Wether to use debug locatizations or not.
   /// In debug mode, the string returned will contain debug information

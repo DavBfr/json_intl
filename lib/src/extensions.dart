@@ -22,7 +22,7 @@ extension BuildContextJsonIntl on BuildContext {
   /// If [strict] is [false] the language rules are bent to always return the
   /// values for zero, one and two.
   String tr(
-    String key, {
+    Symbol key, {
     Map<String, dynamic>? map,
     Map<String, MustacheFilter>? filters,
     JsonIntlGender? gender,

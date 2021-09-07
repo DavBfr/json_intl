@@ -17,17 +17,17 @@ class JsonIntlMockData implements JsonIntlData {
   void append(Map<String, dynamic> map) {}
 
   @override
-  void appendBuiltin(Map<String, JsonIntlValue> map) {}
+  void appendBuiltin(Map<Symbol, JsonIntlValue> map) {}
 
   @override
-  List<String> get keys => const <String>[];
+  List<Symbol> get keys => const <Symbol>[];
 
   @override
-  String translate(String key) => key;
+  String translate(Symbol key) => key.toString();
 
   @override
   String translateWithMap(
-    String key, {
+    Symbol key, {
     Map<String, dynamic>? map,
     Map<String, MustacheFilter>? filters,
     num? count,
@@ -36,5 +36,5 @@ class JsonIntlMockData implements JsonIntlData {
     String? locale,
     bool? strict,
   }) =>
-      key;
+      translate(key);
 }
