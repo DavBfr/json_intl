@@ -5,10 +5,12 @@ import 'package:json_intl/json_intl.dart';
 // ignore_for_file: public_member_api_docs
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
       // translations
       onGenerateTitle: (BuildContext context) =>
           JsonIntl.of(context).get(#app_name),
-      home: MyHomePage(),
+      home: const MyHomePage(),
       localizationsDelegates: const [
         JsonIntlDelegate(
           debug: false, // Set to true to display the translation keys
@@ -38,6 +40,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key}) : super(key: key);
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
