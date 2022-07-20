@@ -16,7 +16,7 @@ extension _SymbolString on Symbol {
   }
 }
 
-/// Generate dart suorce code
+/// Generate dart source code
 class Generator {
   /// Create a `Generator`
   const Generator({
@@ -81,7 +81,7 @@ class Generator {
     }
     var radix = key.hashCode.toRadixString(36);
     if (radix.codeUnitAt(0) < 65) {
-      radix = 'n' + radix;
+      radix = 'n$radix';
     }
     return radix.substring(0, len);
   }
@@ -100,8 +100,8 @@ class Generator {
     final generatedKeys = <String>{};
 
     final variables = <String>{};
-    for (final _key in sortedKeys) {
-      final key = _key.getString();
+    for (final sortedKey in sortedKeys) {
+      final key = sortedKey.getString();
       var variable = _outputVar(key);
 
       var index = 0;
@@ -127,8 +127,8 @@ class Generator {
 
       for (final lang in _langs) {
         final entry = intl[lang]!;
-        if (entry.keys.contains(_key)) {
-          yield '  /// ${_langTag(lang)}: ${_outputStr(entry.translate(_key))}';
+        if (entry.keys.contains(sortedKey)) {
+          yield '  /// ${_langTag(lang)}: ${_outputStr(entry.translate(sortedKey))}';
         } else {
           yield '  /// ${_langTag(lang)}: *** NOT TRANSLATED ***';
         }

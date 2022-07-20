@@ -24,13 +24,13 @@ class JsonIntlDelegate extends LocalizationsDelegate<JsonIntl> {
   /// The assets path where to find the localization files
   final String base;
 
-  /// Wether to use debug locatizations or not.
+  /// Wether to use debug localizations or not.
   /// In debug mode, the string returned will contain debug information
   /// about how it is translated
   final bool debug;
 
   /// List of locales that can be used by the application. If null, the locales
-  /// will be detedected automatically.
+  /// will be detected automatically.
   final List<String>? availableLocales;
 
   @override

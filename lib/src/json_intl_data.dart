@@ -75,7 +75,7 @@ class JsonIntlData {
       }
 
       throw JsonIntlException(
-          'Unable to build a translation for [$key]\n  Gender: neutral\n  Plurial: other');
+          'Unable to build a translation for [$key]\n  Gender: neutral\n  Plural: other');
     }
 
     assert(() {
@@ -114,7 +114,7 @@ class JsonIntlData {
     bool? strict,
   }) {
     map ??= <String, dynamic>{'count': count};
-    final _strict = strict ?? true;
+    final strictValue = strict ?? true;
 
     final mustache = Mustache(
       map: map,
@@ -177,7 +177,7 @@ class JsonIntlData {
     final value = message.get(
       gender,
       plural,
-      _strict ? null : direct,
+      strictValue ? null : direct,
     );
     if (value == null) {
       if (_debug) {
@@ -191,7 +191,7 @@ class JsonIntlData {
         }
       }
       throw JsonIntlException(
-          'Unable to build a translation for [$key]\n  Gender: $gender\n  Plurial: $plural\n  Direct: $direct\n  Count: $count\n  Map: $map');
+          'Unable to build a translation for [$key]\n  Gender: $gender\n  Plural: $plural\n  Direct: $direct\n  Count: $count\n  Map: $map');
     }
 
     var result = mustache.convert(value);

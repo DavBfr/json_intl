@@ -167,12 +167,12 @@ class JsonIntlValue {
       first = false;
       s.write(json.encode(entry.key.toString().substring(15)));
       s.write(':{');
-      var _first = true;
+      var subFirst = true;
       for (final entry in entry.value.entries) {
-        if (!_first) {
+        if (!subFirst) {
           s.write(',');
         }
-        _first = false;
+        subFirst = false;
         s.write(json.encode(entry.key.toString().substring(15)));
         s.write(':');
         s.write(json.encode(entry.value));
