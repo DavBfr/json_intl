@@ -3,15 +3,12 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// @dart=2.9
-
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:json_intl/src/json_intl_data.dart';
-import 'package:json_intl_gen/src/generator.dart';
-import 'package:json_intl_gen/src/pubspec.dart';
+import 'package:json_intl/json_intl_data.dart';
+import 'package:json_intl_gen/generator.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as p;
 
@@ -21,25 +18,25 @@ Future<int> main(List<String> arguments) async {
     ..addOption(
       'source',
       abbr: 's',
-      defaultsTo: 'assets/intl',
+      defaultsTo: GeneratorOptions.def.source,
       help: 'Source intl directory',
     )
     ..addOption(
       'destination',
       abbr: 'd',
-      defaultsTo: 'lib/intl.dart',
+      defaultsTo: GeneratorOptions.def.output,
       help: 'Destination dart file',
     )
     ..addOption(
       'classname',
       abbr: 'c',
-      defaultsTo: 'IntlKeys',
+      defaultsTo: GeneratorOptions.def.className,
       help: 'Destination class name',
     )
     ..addOption(
       'default-locale',
       abbr: 'l',
-      defaultsTo: 'en',
+      defaultsTo: GeneratorOptions.def.defaultLocale,
       help: 'Default generated locale',
     )
     ..addFlag(
@@ -89,12 +86,15 @@ Future<int> main(List<String> arguments) async {
     return 0;
   }
 
-  final String source = argResults['source'];
-  final String /*?*/ destination = argResults['destination'];
   final bool verbose = argResults['verbose'];
-  final bool /*?*/ builtin = argResults['builtin'];
-  final bool /*?*/ mangle = argResults['mangle'];
-  final String /*?*/ defaultLocale = argResults['default-locale'];
+  final options = GeneratorOptions(
+    source: argResults['source'],
+    output: argResults['destination'],
+    builtin: argResults['builtin'],
+    mangle: argResults['mangle'],
+    defaultLocale: argResults['default-locale'],
+    className: argResults['classname'],
+  );
 
   // Initialize logger
   final log = Logger('json_intl');
@@ -107,14 +107,14 @@ Future<int> main(List<String> arguments) async {
     ..level = verbose ? Level.ALL : Level.WARNING;
 
   log.info('Checking source directory exists');
-  final dirSource = Directory(source);
+  final dirSource = Directory(options.source);
   if (!dirSource.existsSync()) {
-    log.severe('Directory $source not found');
+    log.severe('Directory ${options.source} not found');
     return 1;
   }
 
   log.info('Checking output directory');
-  Directory(p.basename(destination));
+  Directory(p.basename(options.output));
   const decoder = JsonDecoder();
   final intl = <String, JsonIntlData>{};
 
@@ -131,16 +131,13 @@ Future<int> main(List<String> arguments) async {
 
   final gen = Generator(
     intl: intl,
-    className: argResults['classname'],
-    defaultLocale: defaultLocale,
-    mangle: mangle,
+    options: options,
   );
 
-  final sourceData =
-      builtin ? gen.createBuiltinFromKeys() : gen.createSourceFromKeys();
+  final sourceData = gen.createSource();
 
-  log.info('Writing ${argResults['classname']} to $destination');
-  File(destination).writeAsStringSync(sourceData);
+  log.info('Writing ${options.className} to ${options.output}');
+  File(options.output).writeAsStringSync(sourceData);
 
   return 0;
 }

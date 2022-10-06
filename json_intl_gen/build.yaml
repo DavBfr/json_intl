@@ -1,0 +1,7 @@
+builders:
+  json_intl_builder:
+    import: "package:json_intl_gen/builder.dart"
+    builder_factories: ["jsonIntlBuilder"]
+    build_extensions: { ".json": [".dart"] }
+    auto_apply: dependents
+    build_to: source

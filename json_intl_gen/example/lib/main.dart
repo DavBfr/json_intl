@@ -22,10 +22,7 @@ class MyApp extends StatelessWidget {
           JsonIntl.of(context).get(IntlKeys.appName),
       home: const MyHomePage(),
       localizationsDelegates: const [
-        JsonIntlDelegate(
-          debug: false, // Set to true to display the translation keys
-          availableLocales: availableLocalesIntlKeys,
-        ), // We add the intl delegate here
+        jsonIntlDelegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],

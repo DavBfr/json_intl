@@ -10,6 +10,8 @@ Add `json_intl_gen` to your `dev_dependencies`.
 flutter pub add --dev json_intl_gen
 ```
 
+## Command-line generation
+
 ### Translation keys only
 
 To generate the translation keys, run:
@@ -33,14 +35,12 @@ It will also generate a list of locales `supportedLocalesIntlKeys` and
 ```dart
 MaterialApp(
   localizationsDelegates: const [
-    JsonIntlDelegate(
-      availableLocales: availableLocalesIntlKeys,
-    ),
+    jsonIntlDelegate,
     GlobalMaterialLocalizations.delegate,
     GlobalWidgetsLocalizations.delegate,
   ],
   supportedLocales: supportedLocalesIntlKeys,
-    home: ...,
+  home: ...,
 );
 ```
 
@@ -54,20 +54,17 @@ dart run json_intl_gen -b
 
 this generates a file `lib/intl.dart` with the same data as
 [translation keys only](#translation-keys-only), plus the translated strings.
-To use it, replace `JsonIntlDelegate` in your `MaterialApp` Widget with:
+Update your `MaterialApp` Widget with:
 
 ```dart
 MaterialApp(
   localizationsDelegates: const [
-    JsonIntlDelegateBuiltin(
-      data: dataIntlKeys,
-      defaultLocale: defaultLocaleIntlKeys,
-    ),
+    jsonIntlDelegate,
     GlobalMaterialLocalizations.delegate,
     GlobalWidgetsLocalizations.delegate,
   ],
   supportedLocales: supportedLocalesIntlKeys,
-    home: ...,
+  home: ...,
 );
 ```
 
@@ -93,4 +90,45 @@ Options:
 -v, --verbose           Verbose output
     --version           Print the version information
 -h, --help              Shows usage information
+```
+
+## build_runner generation
+
+Add the `build_runner` dev dependency
+
+```shell
+flutter pub add --dev build_runner
+```
+
+Build the `intl.dart` file
+
+```shell
+dart run build_runner build
+```
+
+In your MaterialApp, add:
+
+```dart
+MaterialApp(
+  localizationsDelegates: const [
+    jsonIntlDelegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ],
+  supportedLocales: supportedLocalesIntlKeys,
+);
+```
+
+Builder options are configured in your pubspec.yaml:
+
+```yaml
+json_intl:
+  class_name: IntlKeys
+  default_locale: en
+  mangle: false
+  debug: false
+  builtin: true
+  source: assets/intl
+  output: lib/intl.dart
+  format: true
 ```

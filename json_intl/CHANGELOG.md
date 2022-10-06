@@ -4,6 +4,7 @@
 
 - Translation keys are now Symbols
 - Separate json_intl library and generator
+- Add build_runner generator
 
 ## 2.1.0
 
