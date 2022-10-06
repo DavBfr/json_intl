@@ -9,9 +9,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:json_intl/src/generator.dart';
 import 'package:json_intl/src/json_intl_data.dart';
-import 'package:json_intl/src/pubspec.dart';
+import 'package:json_intl_gen/src/generator.dart';
+import 'package:json_intl_gen/src/pubspec.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as p;
 

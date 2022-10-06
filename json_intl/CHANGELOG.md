@@ -3,6 +3,7 @@
 ## 3.0.0
 
 - Translation keys are now Symbols
+- Separate json_intl library and generator
 
 ## 2.1.0
 

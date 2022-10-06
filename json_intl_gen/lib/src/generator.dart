@@ -6,8 +6,8 @@
 import 'dart:convert';
 
 import 'package:dart_style/dart_style.dart';
-
-import 'json_intl_data.dart';
+// ignore: implementation_imports
+import 'package:json_intl/src/json_intl_data.dart';
 
 extension _SymbolString on Symbol {
   String getString() {

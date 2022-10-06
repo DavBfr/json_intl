@@ -5,25 +5,25 @@ import 'dart:ui';
 /// Internationalization constants
 class IntlKeys {
   /// en: 'value'
-  static const key1 = 'key1';
+  static const key1 = #key1;
 
   /// en: 'value {{ num }}'
-  static const key2 = 'key2';
+  static const key2 = #key2;
 
   /// en: 'value {{ num | tr }}'
-  static const key3 = 'key3';
+  static const key3 = #key3;
 
   /// en: 'other values'
-  static const key4 = 'key4';
+  static const key4 = #key4;
 
   /// en: '{{ count }} values'
-  static const key5 = 'key5';
+  static const key5 = #key5;
 
   /// en: 'the child'
-  static const key6 = 'key6';
+  static const key6 = #key6;
 
   /// en: '{{ count}} children'
-  static const key7 = 'key7';
+  static const key7 = #key7;
 }
 
 /// Default Locale

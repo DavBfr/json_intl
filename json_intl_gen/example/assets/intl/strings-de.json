@@ -1,0 +1,10 @@
+{
+	"app_name": "Flutter Demo",
+	"increment": "Erhöhen",
+	"pushed": {
+		"one": "Sie haben den Knopf einmal gedrückt.",
+		"other": "Sie haben den Knopf {{ count }} mal gedrückt.",
+		"zero": "Bitte drücken Sie den Knopf."
+	},
+	"title": "Flutter Demo Startseite"
+}
