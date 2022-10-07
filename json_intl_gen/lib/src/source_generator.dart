@@ -194,6 +194,8 @@ class Generator {
 
     output.add('// This file is generated automatically, do not modify');
     output.add('');
+    output.add('// ignore_for_file: avoid_redundant_argument_values');
+    output.add('');
     output.add('import \'dart:ui\';');
     output.add('');
     output.add('import \'package:json_intl/json_intl.dart\';');
