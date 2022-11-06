@@ -5,6 +5,7 @@
 - Translation keys are now Symbols
 - Separate json_intl library and generator
 - Add build_runner generator
+- Add deprecated `later` method
 
 ## 2.1.0
 

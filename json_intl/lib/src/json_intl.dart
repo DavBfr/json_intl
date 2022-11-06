@@ -33,6 +33,27 @@ class JsonIntl {
     return Localizations.of<JsonIntl>(context, JsonIntl) ?? mock;
   }
 
+  /// Return the string using [map] and [filters] to
+  /// replace the mustache-like variables.
+  /// Useful to later translate the strings using proper keys.
+  /// Intentionally marked as deprecated to generate a linter hint.
+  @Deprecated('Replace with get, count, gender or translate')
+  String later(
+    String text, [
+    Map<String, dynamic>? map,
+    Map<String, MustacheFilter>? filters,
+  ]) {
+    if (map == null) {
+      return text;
+    }
+
+    final mustache = Mustache(
+      map: map,
+      filters: filters ?? const <String, MustacheFilter>{},
+    );
+    return mustache.convert(text);
+  }
+
   /// Return the string corresponding to [key], using [map] and [filters] to
   /// replace the mustache-like variables.
   String get(
