@@ -11,6 +11,7 @@ import 'dart:io';
 
 import 'package:build/build.dart';
 import 'package:glob/glob.dart';
+import 'package:glob/list_local_fs.dart';
 import 'package:json_intl/json_intl_data.dart';
 import 'package:path/path.dart' as p;
 import 'package:yaml/yaml.dart';
@@ -50,14 +51,15 @@ class MyBuilder extends Builder {
     const decoder = JsonDecoder();
     final intl = <String, JsonIntlData>{};
 
-    await for (final assetId
-        in buildStep.findAssets(Glob('assets/intl/*.json'))) {
-      log.info('Loading ${assetId.path}');
-      final jsonData = await buildStep.readAsString(assetId);
+    print('BUILD');
+
+    await for (final file in Glob('${options.source}/*.json').list()) {
+      log.info('Loading ${file.path}');
+      final jsonData = await File(file.path).readAsString();
       final Map<String, dynamic> json = decoder.convert(jsonData);
       final intlData = JsonIntlData();
       intlData.append(json);
-      intl[p.basename(assetId.path)] = intlData;
+      intl[p.basename(file.path)] = intlData;
     }
 
     final gen = Generator(intl: intl, options: options);
