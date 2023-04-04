@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.1
+
+- Update intl dependency
+
 ## 3.0.0
 
 - Translation keys are now Symbols
