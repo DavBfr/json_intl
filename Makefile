@@ -17,6 +17,7 @@ json_intl/example/.metadata:
 json_intl_gen/example/.metadata:
 	cd json_intl_gen/example; flutter create -t app --no-overwrite --org net.nfet --project-name example .
 	rm -rf json_intl_gen/example/test json_intl_gen/example/integration_test
+	cd json_intl_gen/example; dart run build_runner build -d
 
 format: format-dart
 
