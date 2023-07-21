@@ -37,4 +37,17 @@ class JsonIntlMockData implements JsonIntlData {
     bool? strict,
   }) =>
       translate(key);
+
+  @override
+  String later(
+    String text, {
+    Map<String, dynamic>? map,
+    Map<String, MustacheFilter>? filters,
+    num? count,
+    JsonIntlGender? gender,
+    int precision = 0,
+    String? locale,
+    bool? strict,
+  }) =>
+      text;
 }

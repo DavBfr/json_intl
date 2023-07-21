@@ -206,6 +206,39 @@ class JsonIntlData {
     return result;
   }
 
+  String later(
+    String text, {
+    Map<String, dynamic>? map,
+    Map<String, MustacheFilter>? filters,
+    num? count,
+    JsonIntlGender? gender,
+    int precision = 0,
+    String? locale,
+    bool? strict,
+  }) {
+    map ??= <String, dynamic>{'count': count};
+
+    final mustache = Mustache(
+      map: map,
+      filters: filters ?? const <String, MustacheFilter>{},
+      debug: _debug,
+    );
+    final message = text;
+
+    final value = message;
+
+    var result = mustache.convert(value);
+
+    assert(() {
+      if (_debug) {
+        result = '[[$result]]';
+      }
+      return true;
+    }());
+
+    return result;
+  }
+
   @override
   String toString() {
     final s = StringBuffer('{');

@@ -105,7 +105,10 @@ class JsonIntlValue {
     }
   }
 
-  static void _loadGender(Map map, Map<String, dynamic> message) {
+  static void _loadGender(
+    Map<dynamic, dynamic> map,
+    Map<String, dynamic> message,
+  ) {
     for (final key in message.keys) {
       switch (key) {
         case 'male':
@@ -127,7 +130,10 @@ class JsonIntlValue {
     }
   }
 
-  static void _loadPlural(Map map, dynamic message) {
+  static void _loadPlural(
+    Map<dynamic, dynamic> map,
+    dynamic message,
+  ) {
     if (message is String) {
       map[JsonIntlPlural.other] = message;
       return;

@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.0
+
+- Improve later method
+
 ## 3.0.2
 
 - Fix example
