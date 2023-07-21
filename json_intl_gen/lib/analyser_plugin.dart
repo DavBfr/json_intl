@@ -6,14 +6,27 @@ import 'package:analyzer/dart/analysis/results.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
 import 'package:analyzer/file_system/physical_file_system.dart';
-import 'package:analyzer/source/line_info.dart';
 import 'package:analyzer_plugin/plugin/plugin.dart';
 import 'package:analyzer_plugin/protocol/protocol_common.dart';
 import 'package:analyzer_plugin/protocol/protocol_generated.dart';
 import 'package:analyzer_plugin/starter.dart';
+import 'package:logging/logging.dart';
+import 'package:logging_appenders/logging_appenders.dart';
 import 'package:path/path.dart' as path;
 
+final _log = Logger('json_intl');
+
 void start(List<String> args, SendPort sendPort) {
+  Logger.root.clearListeners();
+  Logger.root.level = Level.ALL;
+  final home = Platform.environment['HOME']!;
+  final appender = RotatingFileAppender(
+    baseFilePath: path.join(home, 'json_intl.log.txt'),
+  );
+  appender.attachToLogger(Logger.root);
+
+  _log.info('START');
+
   ServerPluginStarter(
           MyPlugin(resourceProvider: PhysicalResourceProvider.INSTANCE))
       .start(sendPort);
@@ -36,24 +49,12 @@ class MyPlugin extends ServerPlugin {
     required AnalysisContext analysisContext,
     required String path,
   }) async {
-    final f = File('lint.txt');
-    final s = f.openWrite(mode: FileMode.append);
-    s.write('$path\n');
-    s.close();
-
-    final root = analysisContext.contextRoot.root.path;
-
-    final isAnalyzed = analysisContext.contextRoot.isAnalyzed(path);
-    final isExcluded = !isAnalyzed;
-    if (isExcluded) {
-      channel.sendNotification(
-        AnalysisErrorsParams(
-          path,
-          <AnalysisError>[],
-        ).toNotification(),
-      );
+    if (!path.endsWith('.dart')) {
       return;
     }
+
+    final errors = <AnalysisErrorFixes>[];
+
     final analysisResult =
         await analysisContext.currentSession.getResolvedUnit(path);
 
@@ -66,7 +67,15 @@ class MyPlugin extends ServerPlugin {
       );
       return;
     }
-    final errors = _check(root, path, analysisResult.unit, analysisResult);
+
+    final visitor = JsonIntlVisitor<dynamic>(
+      errors,
+      path,
+      analysisResult,
+    );
+
+    analysisResult.unit.visitChildren(visitor);
+
     channel.sendNotification(
       AnalysisErrorsParams(
         path,
@@ -74,87 +83,62 @@ class MyPlugin extends ServerPlugin {
       ).toNotification(),
     );
   }
-
-  List<AnalysisErrorFixes> _check(
-    String? root,
-    String filePath,
-    CompilationUnit unit,
-    ResolvedUnitResult analysisResult,
-  ) {
-    final errors = <AnalysisErrorFixes>[];
-
-    var relative = '';
-    if (root != null) {
-      relative = path.relative(filePath, from: root);
-    }
-
-    final visitor = MyVisitor<dynamic>(
-      filePath: filePath,
-      unit: unit,
-      foundSomething: (location) {
-        final content = analysisResult.content;
-
-        errors.add(
-          AnalysisErrorFixes(
-            AnalysisError(
-              AnalysisErrorSeverity('WARNING'),
-              AnalysisErrorType.LINT,
-              location,
-              'Found function call:',
-              'pouet',
-              correction: 'Do something! ($filePath) ($relative)',
-              hasFix: false,
-            ),
-            // fixes: [
-            //   ...?_extractStringFix(
-            //     analysisOptions,
-            //     arbFile,
-            //     filePath,
-            //     foundIntl,
-            //     analysisResult,
-            //   ),
-            //   fix,
-            // ],
-          ),
-        );
-      },
-    );
-    unit.visitChildren(visitor);
-    return errors;
-  }
 }
 
-class MyVisitor<R> extends GeneralizingAstVisitor<R> {
-  MyVisitor({
-    required this.filePath,
-    required this.unit,
-    required this.foundSomething,
-  }) : lineInfo = unit.lineInfo;
+class JsonIntlVisitor<R> extends GeneralizingAstVisitor<R> {
+  JsonIntlVisitor(this.errors, this.path, this.analysisResult);
 
-  final String filePath;
-  final CompilationUnit unit;
-  final LineInfo? lineInfo;
+  final List<AnalysisErrorFixes> errors;
 
-  final void Function(Location l) foundSomething;
+  final String path;
+
+  final ResolvedUnitResult analysisResult;
 
   @override
-  R? visitFunctionReference(FunctionReference node) {
-    final lineInfo = unit.lineInfo;
-    final begin = node.beginToken.charOffset;
-    final end = node.endToken.charEnd;
-    final loc = lineInfo.getLocation(begin);
-    final locEnd = lineInfo.getLocation(end);
+  R? visitMethodInvocation(MethodInvocation node) {
+    if (node.methodName.name == 'later' &&
+        node.realTarget?.staticType?.element?.name == 'JsonIntl') {
+      _log.warning('${node.offset} ${node.length} ${node.end}');
 
-    foundSomething(Location(
-      filePath,
-      node.offset,
-      node.length,
-      loc.lineNumber,
-      loc.columnNumber,
-      endLine: locEnd.lineNumber,
-      endColumn: locEnd.columnNumber,
-    ));
+      final arg = node.argumentList.arguments.first;
 
-    return super.visitFunctionReference(node);
+      errors.add(
+        AnalysisErrorFixes(
+          AnalysisError(
+            AnalysisErrorSeverity('WARNING'),
+            AnalysisErrorType.LINT,
+            Location(
+              path,
+              node.offset,
+              node.length,
+              0,
+              0,
+            ),
+            'Using later translation',
+            'json_intl',
+            correction: 'Replace with get, count, gender or translate',
+            hasFix: true,
+          ),
+          fixes: [
+            PrioritizedSourceChange(
+              1,
+              SourceChange(
+                'Do it',
+                edits: [
+                  SourceFileEdit(
+                    path,
+                    analysisResult.exists ? 0 : -1,
+                    edits: [
+                      SourceEdit(arg.offset, arg.length, '\'COUCOU\''),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    return super.visitMethodInvocation(node);
   }
 }

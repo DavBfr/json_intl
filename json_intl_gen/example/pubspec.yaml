@@ -16,9 +16,15 @@ dependencies:
 
 dependency_overrides:
   json_intl:
-    path: ../../json_intl
+    git:
+      url: https://github.com/DavBfr/json_intl
+      ref: analyzer
+      path: json_intl
   json_intl_gen:
-    path: ..
+    git:
+      url: https://github.com/DavBfr/json_intl
+      ref: analyzer
+      path: json_intl_gen
 
 dev_dependencies:
   build_runner:
