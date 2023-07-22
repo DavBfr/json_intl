@@ -36,8 +36,16 @@ class JsonIntl {
   /// Return the string using [map] and [filters] to
   /// replace the mustache-like variables.
   /// Useful to later translate the strings using proper keys.
-  /// Intentionally marked as deprecated to generate a linter hint.
-  @Deprecated('Replace with get, count, gender or translate')
+  /// use the json_intl_gen analyzer plugin to show warnings
+  /// in your `analysis_options.yaml` file:
+  ///
+  /// ```yaml
+  /// analyzer:
+  ///   plugins:
+  ///     - json_intl_gen
+  /// ```
+  ///
+  /// `json_intl_gen` should also be in your `dev_dependencies`.
   String later(
     String text, {
     Map<String, dynamic>? map,
