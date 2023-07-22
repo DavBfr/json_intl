@@ -60,7 +60,7 @@ class MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         // A simple translated title
-        title: Text(JsonIntl.of(context).get(#title)),
+        title: Text(JsonIntl.of(context).later('This is the title')),
       ),
       body: Center(
         child: Column(

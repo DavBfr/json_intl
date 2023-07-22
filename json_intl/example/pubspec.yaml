@@ -17,6 +17,8 @@ dependencies:
 dependency_overrides:
   json_intl:
     path: ..
+  json_intl_gen:
+    path: ../../json_intl_gen
 
 dev_dependencies:
   flutter_lints:
