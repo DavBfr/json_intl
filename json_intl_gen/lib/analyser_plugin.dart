@@ -115,7 +115,7 @@ class JsonIntlVisitor<R> extends GeneralizingAstVisitor<R> {
               0,
             ),
             'Using later translation',
-            'json_intl',
+            'json_intl_later',
             correction: 'Replace with get, count, gender or translate',
             hasFix: true,
           ),

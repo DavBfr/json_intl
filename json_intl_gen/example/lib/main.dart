@@ -49,6 +49,8 @@ class MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final intl = JsonIntl.of(context);
+
     return Scaffold(
       appBar: AppBar(
         // A simple translated title
@@ -59,8 +61,8 @@ class MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             // A string translated depending on a number to count something
-            Text(JsonIntl.of(context)
-                .later('Pushed {{ numbers }}', map: {'numbers': _counter})),
+            Text(
+                intl.later('Pushed {{ numbers }}', map: {'numbers': _counter})),
           ],
         ),
       ),
