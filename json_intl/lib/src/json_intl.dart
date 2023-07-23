@@ -97,6 +97,8 @@ class JsonIntl {
     Symbol key, {
     Map<String, dynamic>? map,
     Map<String, MustacheFilter>? filters,
+    int precision = 0,
+    String? locale,
     bool? strict,
   }) {
     return _data.translateWithMap(
@@ -104,7 +106,8 @@ class JsonIntl {
       map: map,
       filters: filters,
       count: value,
-      locale: locale.toLanguageTag(),
+      precision: precision,
+      locale: locale ?? this.locale.toLanguageTag(),
       strict: strict,
     );
   }
@@ -145,6 +148,8 @@ class JsonIntl {
     Map<String, dynamic>? map,
     Map<String, MustacheFilter>? filters,
     bool? strict,
+    int precision = 0,
+    String? locale,
   }) {
     if (map == null && count == null && gender == null) {
       return _data.translate(key);
@@ -155,8 +160,9 @@ class JsonIntl {
       map: map,
       filters: filters,
       count: count,
+      precision: precision,
       gender: gender,
-      locale: locale.toLanguageTag(),
+      locale: locale ?? this.locale.toLanguageTag(),
       strict: strict,
     );
   }

@@ -3,11 +3,9 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:json_intl/json_intl_data.dart';
 import 'package:json_intl_gen/generator.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as p;
@@ -94,7 +92,7 @@ Future<int> main(List<String> arguments) async {
     mangle: argResults['mangle'],
     defaultLocale: argResults['default-locale'],
     className: argResults['classname'],
-  );
+  ).loadFromYaml(File('pubspec.yaml').readAsStringSync());
 
   // Initialize logger
   final log = Logger('json_intl');
@@ -106,35 +104,15 @@ Future<int> main(List<String> arguments) async {
     })
     ..level = verbose ? Level.ALL : Level.WARNING;
 
-  log.info('Checking source directory exists');
-  final dirSource = Directory(options.source);
-  if (!dirSource.existsSync()) {
-    log.severe('Directory ${options.source} not found');
-    return 1;
-  }
-
   log.info('Checking output directory');
   Directory(p.basename(options.output));
-  const decoder = JsonDecoder();
-  final intl = <String, JsonIntlData>{};
 
-  await for (FileSystemEntity file in dirSource.list()) {
-    if (file is File) {
-      log.info('Loading ${file.path}');
-      final jsonData = file.readAsStringSync();
-      final Map<String, dynamic> json = decoder.convert(jsonData);
-      final intlData = JsonIntlData();
-      intlData.append(json);
-      intl[p.basename(file.path)] = intlData;
-    }
+  final String sourceData;
+  try {
+    sourceData = await generateIntl(options);
+  } catch (_) {
+    return 1;
   }
-
-  final gen = Generator(
-    intl: intl,
-    options: options,
-  );
-
-  final sourceData = gen.createSource();
 
   log.info('Writing ${options.className} to ${options.output}');
   File(options.output).writeAsStringSync(sourceData);

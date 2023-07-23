@@ -54,14 +54,14 @@ class MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         // A simple translated title
-        title: Text(JsonIntl.of(context).later('App Name')),
+        title: Text(JsonIntl.of(context).get(IntlKeys.appName)),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             // A string translated depending on a number to count something
-            Text(intl.later('Pushed {{ numbers }}', count: _counter)),
+            Text(intl.translate(IntlKeys.pushedNumbers, count: _counter)),
           ],
         ),
       ),

@@ -3,6 +3,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:yaml/yaml.dart';
+
 class GeneratorOptions {
   const GeneratorOptions({
     this.defaultLocale = 'en',
@@ -63,4 +65,24 @@ class GeneratorOptions {
         source: source ?? this.source,
         output: output ?? this.output,
       );
+
+  GeneratorOptions loadFromYaml(String yaml) {
+    final pubspec = loadYaml(yaml) as Map;
+
+    if (pubspec.containsKey('json_intl')) {
+      final opt = pubspec['json_intl'] as Map;
+      return copyWith(
+        className: opt['class_name'],
+        defaultLocale: opt['default_locale'],
+        mangle: opt['mangle'],
+        debug: opt['debug'],
+        builtin: opt['builtin'],
+        source: opt['source'],
+        output: opt['output'],
+        format: opt['format'],
+      );
+    }
+
+    return this;
+  }
 }
