@@ -46,9 +46,6 @@ class _AddLaterFix extends DartFix {
     AnalysisError analysisError,
     List<AnalysisError> others,
   ) {
-    final f = File(
-        '/Users/dad/Documents/Perso/llConvertAS/vendor/json_intl/json_intl_gen/OUTPUT.txt');
-
     var path = p.dirname(resolver.path);
     var pubspecFile = '';
     while (true) {
@@ -57,11 +54,11 @@ class _AddLaterFix extends DartFix {
         break;
       }
       final newPath = p.dirname(path);
-      if (newPath == path) return;
+      if (newPath == path) {
+        return;
+      }
       path = newPath;
     }
-
-    f.writeAsStringSync(pubspecFile);
 
     final pubspec = File(pubspecFile).readAsStringSync();
     final pubspecOptions = GeneratorOptions.builder.loadFromYaml(pubspec);
