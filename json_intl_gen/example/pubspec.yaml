@@ -16,20 +16,15 @@ dependencies:
 
 dependency_overrides:
   json_intl:
-    git:
-      url: https://github.com/DavBfr/json_intl
-      ref: analyzer
-      path: json_intl
+    path: ../../json_intl
   json_intl_gen:
-    git:
-      url: https://github.com/DavBfr/json_intl
-      ref: analyzer
-      path: json_intl_gen
+    path: ../
 
 dev_dependencies:
   build_runner:
   flutter_lints:
   json_intl_gen:
+  custom_lint:
 
 flutter:
   uses-material-design: true

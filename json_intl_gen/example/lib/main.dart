@@ -54,7 +54,7 @@ class MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         // A simple translated title
-        title: Text(JsonIntl.of(context).later('App title')),
+        title: Text(JsonIntl.of(context).later('App Name')),
       ),
       body: Center(
         child: Column(

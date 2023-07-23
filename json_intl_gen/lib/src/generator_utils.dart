@@ -11,7 +11,7 @@ String unCapitalize(String s) {
   return '${s[0].toLowerCase()}${s.substring(1)}';
 }
 
-String outputVar(String s, {bool camelCase = false}) {
+String outputVar(String s, {bool camelCase = false, String sep = ''}) {
   final t = camelCase
       ? s.replaceAll(RegExp(r'[^A-Za-z0-9]'), ' ')
       : s.replaceAll(RegExp(r'[^A-Za-z0-9_]'), ' ');
@@ -21,10 +21,11 @@ String outputVar(String s, {bool camelCase = false}) {
 
   var first = true;
   for (final word in group) {
-    if (first) {
+    if (first && word.isNotEmpty) {
       first = false;
       buffer.write(word.toLowerCase());
-    } else {
+    } else if (word.isNotEmpty) {
+      buffer.write(sep);
       buffer.write(word.substring(0, 1).toUpperCase());
       buffer.write(word.substring(1).toLowerCase());
     }
