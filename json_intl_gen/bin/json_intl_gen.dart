@@ -7,6 +7,7 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:json_intl_gen/generator.dart';
+import 'package:json_intl_gen/src/csv.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as p;
 
@@ -48,6 +49,16 @@ Future<int> main(List<String> arguments) async {
       abbr: 'm',
       negatable: false,
       help: 'Change keys to a random string',
+    )
+    ..addFlag(
+      'export-csv',
+      negatable: false,
+      help: 'Export the translations to a csv file',
+    )
+    ..addFlag(
+      'import-csv',
+      negatable: false,
+      help: 'Export the translations to a csv file',
     )
     ..addFlag(
       'verbose',
@@ -103,6 +114,18 @@ Future<int> main(List<String> arguments) async {
           '[${record.loggerName}] ${record.level.name}: ${record.message}');
     })
     ..level = verbose ? Level.ALL : Level.WARNING;
+
+  if (argResults['export-csv']) {
+    final gen = CsvGenerator(options: options);
+    await gen.export();
+    return 0;
+  }
+
+  if (argResults['import-csv']) {
+    final gen = CsvGenerator(options: options);
+    await gen.import();
+    return 0;
+  }
 
   log.info('Checking output directory');
   Directory(p.basename(options.output));
