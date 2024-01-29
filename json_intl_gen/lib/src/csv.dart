@@ -167,9 +167,9 @@ class CsvGenerator {
     return options.defaultLocale;
   }
 
-  int _langCompare(String a, String b) {
-    final a1 = _langTag(a);
-    final b1 = _langTag(b);
-    return a1.compareTo(b1);
-  }
+  // int _langCompare(String a, String b) {
+  //   final a1 = _langTag(a);
+  //   final b1 = _langTag(b);
+  //   return a1.compareTo(b1);
+  // }
 }
