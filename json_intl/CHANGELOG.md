@@ -3,6 +3,7 @@
 ## 3.1.0
 
 - Improve later method
+- Update dependencies
 
 ## 3.0.2
 
