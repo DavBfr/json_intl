@@ -20,7 +20,7 @@ class Translated extends StatelessWidget {
     this.textDirection,
     this.softWrap,
     this.overflow,
-    this.textScaleFactor,
+    this.textScaler,
     this.maxLines,
     this.semanticsLabel,
     this.textWidthBasis,
@@ -42,7 +42,7 @@ class Translated extends StatelessWidget {
 
   final TextOverflow? overflow;
 
-  final double? textScaleFactor;
+  final TextScaler? textScaler;
 
   final int? maxLines;
 
@@ -66,7 +66,7 @@ class Translated extends StatelessWidget {
       style: style,
       textAlign: textAlign,
       textDirection: textDirection,
-      textScaleFactor: textScaleFactor,
+      textScaler: textScaler,
       textWidthBasis: textWidthBasis,
     );
   }

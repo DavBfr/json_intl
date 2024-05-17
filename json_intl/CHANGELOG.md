@@ -1,6 +1,10 @@
 # Changelog
 
-## 3.1.0
+## 3.1.2
+
+- Replace textScaleFactorwith textScaler
+
+## 3.1.1
 
 - Improve later method
 - Update dependencies
