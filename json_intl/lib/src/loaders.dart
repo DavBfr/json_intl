@@ -62,7 +62,7 @@ Future<void> loadMessagesBuiltin(
     into.appendBuiltin(data[locale.languageCode]!);
   }
 
-  if (data.containsKey(locale)) {
-    into.appendBuiltin(data[locale]!);
+  if (data.containsKey(locale.toString())) {
+    into.appendBuiltin(data[locale.toString()]!);
   }
 }
