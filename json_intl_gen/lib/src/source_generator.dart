@@ -90,7 +90,17 @@ class Generator {
     final sortedKeys = keys.toList();
     sortedKeys.sort((a, b) => a.getString().compareTo(b.getString()));
 
-    final generatedKeys = <String>{};
+    final generatedKeys = <String>{
+      'abstract', 'as', 'assert', 'async', 'await', 'base', 'break', //
+      'case', 'catch', 'class', 'const', 'continue', 'covariant', 'default',
+      'deferred', 'do', 'dynamic', 'else', 'enum', 'export', 'extends',
+      'extension', 'external', 'factory', 'false', 'final', 'finally', 'for',
+      'Function', 'get', 'hide', 'if', 'implements', 'import', 'in',
+      'interface', 'is', 'late', 'library', 'mixin', 'new', 'null', 'of', 'on',
+      'operator', 'part', 'required', 'rethrow', 'return', 'sealed', 'set',
+      'show', 'static', 'super', 'switch', 'sync', 'this', 'throw', 'true',
+      'try', 'type', 'typedef', 'var', 'void', 'when', 'with', 'while', 'yield',
+    };
 
     final variables = <String>{};
     for (final sortedKey in sortedKeys) {
@@ -109,7 +119,7 @@ class Generator {
       }
 
       var finalName = key;
-      if (options.mangle) {
+      if (options.mangle || generatedKeys.contains(finalName)) {
         var n = 2;
         do {
           finalName = _generateName(key, n);

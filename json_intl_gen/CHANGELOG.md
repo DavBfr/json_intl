@@ -3,6 +3,7 @@
 ## 3.0.2
 
 - Update dependencies
+- Prevent usage of forbidden keywords
 
 ## 3.0.1
 
