@@ -7,6 +7,7 @@ import 'dart:convert';
 
 import 'package:dart_style/dart_style.dart';
 import 'package:json_intl/json_intl_data.dart';
+import 'package:pub_semver/pub_semver.dart';
 
 import 'generator_options.dart';
 import 'generator_utils.dart';
@@ -182,7 +183,9 @@ class Generator {
     output.addAll(_createSourceFromKeys());
 
     if (options.format) {
-      return DartFormatter().format(output.join('\n')).toString();
+      return DartFormatter(languageVersion: Version.none)
+          .format(output.join('\n'))
+          .toString();
     }
 
     return output.join('\n');
@@ -241,7 +244,9 @@ class Generator {
     output.add('};');
 
     if (options.format) {
-      return DartFormatter().format(output.join('\n')).toString();
+      return DartFormatter(languageVersion: Version.none)
+          .format(output.join('\n'))
+          .toString();
     }
 
     return output.join('\n');
