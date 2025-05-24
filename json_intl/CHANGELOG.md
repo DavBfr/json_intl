@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.3
+
+- Update dependencies for Flutter 3.32
+
 ## 3.1.2
 
 - Replace textScaleFactorwith textScaler
