@@ -51,8 +51,6 @@ class MyBuilder extends Builder {
     const decoder = JsonDecoder();
     final intl = <String, JsonIntlData>{};
 
-    print('BUILD');
-
     await for (final file in Glob('${options.source}/*.json').list()) {
       log.info('Loading ${file.path}');
       final jsonData = await File(file.path).readAsString();
@@ -71,6 +69,8 @@ class MyBuilder extends Builder {
 
   @override
   Map<String, List<String>> get buildExtensions => {
-        '${options.source}/strings.json': [options.output],
+        'pubspec.yaml': [options.output],
+        for (final file in Glob('${options.source}/*.json').listSync())
+          file.path: [options.output],
       };
 }
