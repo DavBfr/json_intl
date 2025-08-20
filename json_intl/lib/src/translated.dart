@@ -12,7 +12,7 @@ import 'json_intl.dart';
 class Translated extends StatelessWidget {
   const Translated(
     this.keyword, {
-    Key? key,
+    super.key,
     this.map,
     this.style,
     this.strutStyle,
@@ -24,7 +24,7 @@ class Translated extends StatelessWidget {
     this.maxLines,
     this.semanticsLabel,
     this.textWidthBasis,
-  }) : super(key: key);
+  });
 
   final Symbol keyword;
 

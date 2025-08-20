@@ -3,6 +3,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -118,7 +120,7 @@ Future<int> main(List<String> arguments) async {
   const decoder = JsonDecoder();
   final intl = <String, JsonIntlData>{};
 
-  await for (FileSystemEntity file in dirSource.list()) {
+  await for (final FileSystemEntity file in dirSource.list()) {
     if (file is File) {
       log.info('Loading ${file.path}');
       final jsonData = file.readAsStringSync();
