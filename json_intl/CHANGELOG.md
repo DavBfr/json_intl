@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.2.0
+
+- Refactor translation parameters to use num for count and add precision and locale options
+
 ## 3.1.3
 
 - Update dependencies for Flutter 3.32

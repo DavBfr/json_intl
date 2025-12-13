@@ -17,7 +17,7 @@ extension BuildContextJsonIntl on BuildContext {
   /// replace the mustache-like variables.
   /// [gender] helps to choose the right translation variant for the specified
   /// gender.
-  /// [value] is a number that helps to choose the right translation variant
+  /// [count] is a number that helps to choose the right translation variant
   /// according to the current language rules.
   /// If [strict] is [false] the language rules are bent to always return the
   /// values for zero, one and two.
@@ -26,7 +26,9 @@ extension BuildContextJsonIntl on BuildContext {
     Map<String, dynamic>? map,
     Map<String, MustacheFilter>? filters,
     JsonIntlGender? gender,
-    int? count,
+    num? count,
+    int precision = 0,
+    String? locale,
     bool? strict,
   }) {
     return JsonIntl.of(this).translate(
@@ -35,6 +37,8 @@ extension BuildContextJsonIntl on BuildContext {
       count: count,
       map: map,
       filters: filters,
+      precision: precision,
+      locale: locale,
       strict: strict,
     );
   }

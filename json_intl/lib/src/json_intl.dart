@@ -47,17 +47,16 @@ class JsonIntl {
     int precision = 0,
     String? locale,
     bool? strict,
-  }) =>
-      _data.later(
-        text,
-        map: map,
-        filters: filters,
-        count: count,
-        gender: gender,
-        precision: precision,
-        locale: locale,
-        strict: strict,
-      );
+  }) => _data.later(
+    text,
+    map: map,
+    filters: filters,
+    count: count,
+    gender: gender,
+    precision: precision,
+    locale: locale,
+    strict: strict,
+  );
 
   /// Return the string corresponding to [key], using [map] and [filters] to
   /// replace the mustache-like variables.
@@ -126,19 +125,27 @@ class JsonIntl {
   /// replace the mustache-like variables.
   /// [gender] helps to choose the right translation variant for the specified
   /// gender.
-  /// [value] is a number that helps to choose the right translation variant
+  /// [count] is a number that helps to choose the right translation variant
   /// according to the current language rules.
   /// If [strict] is [false] the language rules are bent to always return the
   /// values for zero, one and two.
   String translate(
     Symbol key, {
     JsonIntlGender? gender,
-    int? count,
+    num? count,
     Map<String, dynamic>? map,
     Map<String, MustacheFilter>? filters,
+    int precision = 0,
+    String? locale,
     bool? strict,
   }) {
-    if (map == null && count == null && gender == null) {
+    if (map == null &&
+        filters == null &&
+        count == null &&
+        gender == null &&
+        strict == null &&
+        locale == null &&
+        precision == 0) {
       return _data.translate(key);
     }
 
@@ -148,7 +155,8 @@ class JsonIntl {
       filters: filters,
       count: count,
       gender: gender,
-      locale: locale.toLanguageTag(),
+      precision: precision,
+      locale: locale ?? this.locale.toLanguageTag(),
       strict: strict,
     );
   }
