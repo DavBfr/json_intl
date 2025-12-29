@@ -12,13 +12,9 @@ import 'package:test/test.dart';
 
 void main() {
   late JsonIntlData data;
-  final map = <String, dynamic>{
-    'num': 123,
-  };
+  final map = <String, dynamic>{'num': 123};
 
-  final fn = <String, MustacheFilter>{
-    'tr': (dynamic value) => '"$value"',
-  };
+  final fn = <String, MustacheFilter>{'tr': (dynamic value) => '"$value"'};
 
   setUpAll(() {
     data = JsonIntlData();
@@ -44,18 +40,9 @@ void main() {
         'other': 'the child',
       },
       'key7': <String, dynamic>{
-        'male': {
-          'one': 'a boy',
-          'many': '{{count}} boys',
-        },
-        'female': {
-          'one': 'a girl',
-          'many': '{{count }} girls',
-        },
-        'neutral': {
-          'one': 'a child',
-          'many': '{{ count}} children',
-        }
+        'male': {'one': 'a boy', 'many': '{{count}} boys'},
+        'female': {'one': 'a girl', 'many': '{{count }} girls'},
+        'neutral': {'one': 'a child', 'many': '{{ count}} children'},
       },
     });
   });
@@ -90,85 +77,199 @@ void main() {
   test('Plural translation ar_AR', () {
     const locale = 'ar-AR';
     expect(
-        data.translateWithMap(#key4,
-            map: map, filters: fn, count: 0, locale: locale),
-        'no value');
+      data.translateWithMap(
+        #key4,
+        map: map,
+        filters: fn,
+        count: 0,
+        locale: locale,
+      ),
+      'no value',
+    );
     expect(
-        data.translateWithMap(#key4,
-            map: map, filters: fn, count: 1, locale: locale),
-        'one value');
+      data.translateWithMap(
+        #key4,
+        map: map,
+        filters: fn,
+        count: 1,
+        locale: locale,
+      ),
+      'one value',
+    );
     expect(
-        data.translateWithMap(#key4,
-            map: map, filters: fn, count: 2, locale: locale),
-        'two values');
+      data.translateWithMap(
+        #key4,
+        map: map,
+        filters: fn,
+        count: 2,
+        locale: locale,
+      ),
+      'two values',
+    );
     expect(
-        data.translateWithMap(#key4,
-            map: map, filters: fn, count: 3, locale: locale),
-        'few values');
+      data.translateWithMap(
+        #key4,
+        map: map,
+        filters: fn,
+        count: 3,
+        locale: locale,
+      ),
+      'few values',
+    );
     expect(
-        data.translateWithMap(#key4,
-            map: map, filters: fn, count: 100, locale: locale),
-        'other values');
+      data.translateWithMap(
+        #key4,
+        map: map,
+        filters: fn,
+        count: 100,
+        locale: locale,
+      ),
+      'other values',
+    );
     expect(
-        data.translateWithMap(#key4,
-            map: map, filters: fn, count: -1, locale: locale),
-        'many values');
+      data.translateWithMap(
+        #key4,
+        map: map,
+        filters: fn,
+        count: -1,
+        locale: locale,
+      ),
+      'many values',
+    );
   });
 
   test('Plural translation en_US', () {
     const locale = 'en-US';
     expect(
-        data.translateWithMap(#key4,
-            map: map, filters: fn, count: 0, locale: locale),
-        'other values');
+      data.translateWithMap(
+        #key4,
+        map: map,
+        filters: fn,
+        count: 0,
+        locale: locale,
+      ),
+      'other values',
+    );
     expect(
-        data.translateWithMap(#key4,
-            map: map, filters: fn, count: 1, locale: locale),
-        'one value');
+      data.translateWithMap(
+        #key4,
+        map: map,
+        filters: fn,
+        count: 1,
+        locale: locale,
+      ),
+      'one value',
+    );
     expect(
-        data.translateWithMap(#key4,
-            map: map, filters: fn, count: 2, locale: locale),
-        'other values');
+      data.translateWithMap(
+        #key4,
+        map: map,
+        filters: fn,
+        count: 2,
+        locale: locale,
+      ),
+      'other values',
+    );
     expect(
-        data.translateWithMap(#key4,
-            map: map, filters: fn, count: 3, locale: locale),
-        'other values');
+      data.translateWithMap(
+        #key4,
+        map: map,
+        filters: fn,
+        count: 3,
+        locale: locale,
+      ),
+      'other values',
+    );
     expect(
-        data.translateWithMap(#key4,
-            map: map, filters: fn, count: 100, locale: locale),
-        'other values');
+      data.translateWithMap(
+        #key4,
+        map: map,
+        filters: fn,
+        count: 100,
+        locale: locale,
+      ),
+      'other values',
+    );
     expect(
-        data.translateWithMap(#key4,
-            map: map, filters: fn, count: -1, locale: locale),
-        'other values');
+      data.translateWithMap(
+        #key4,
+        map: map,
+        filters: fn,
+        count: -1,
+        locale: locale,
+      ),
+      'other values',
+    );
   });
 
   test('Plural translation en_US relaxed', () {
     const locale = 'en-US';
     expect(
-        data.translateWithMap(#key4,
-            map: map, filters: fn, count: 0, locale: locale, strict: false),
-        'no value');
+      data.translateWithMap(
+        #key4,
+        map: map,
+        filters: fn,
+        count: 0,
+        locale: locale,
+        strict: false,
+      ),
+      'no value',
+    );
     expect(
-        data.translateWithMap(#key4,
-            map: map, filters: fn, count: 1, locale: locale, strict: false),
-        'one value');
+      data.translateWithMap(
+        #key4,
+        map: map,
+        filters: fn,
+        count: 1,
+        locale: locale,
+        strict: false,
+      ),
+      'one value',
+    );
     expect(
-        data.translateWithMap(#key4,
-            map: map, filters: fn, count: 2, locale: locale, strict: false),
-        'two values');
+      data.translateWithMap(
+        #key4,
+        map: map,
+        filters: fn,
+        count: 2,
+        locale: locale,
+        strict: false,
+      ),
+      'two values',
+    );
     expect(
-        data.translateWithMap(#key4,
-            map: map, filters: fn, count: 3, locale: locale, strict: false),
-        'other values');
+      data.translateWithMap(
+        #key4,
+        map: map,
+        filters: fn,
+        count: 3,
+        locale: locale,
+        strict: false,
+      ),
+      'other values',
+    );
     expect(
-        data.translateWithMap(#key4,
-            map: map, filters: fn, count: 100, locale: locale, strict: false),
-        'other values');
+      data.translateWithMap(
+        #key4,
+        map: map,
+        filters: fn,
+        count: 100,
+        locale: locale,
+        strict: false,
+      ),
+      'other values',
+    );
     expect(
-        data.translateWithMap(#key4,
-            map: map, filters: fn, count: -1, locale: locale, strict: false),
-        'other values');
+      data.translateWithMap(
+        #key4,
+        map: map,
+        filters: fn,
+        count: -1,
+        locale: locale,
+        strict: false,
+      ),
+      'other values',
+    );
   });
 
   test('Plural translation limited', () {
@@ -183,24 +284,34 @@ void main() {
   test('Gender translation', () {
     expect(data.translateWithMap(#key6), 'the child');
     expect(
-        data.translateWithMap(#key6, gender: JsonIntlGender.male), 'the boy');
-    expect(data.translateWithMap(#key6, gender: JsonIntlGender.female),
-        'the girl');
+      data.translateWithMap(#key6, gender: JsonIntlGender.male),
+      'the boy',
+    );
+    expect(
+      data.translateWithMap(#key6, gender: JsonIntlGender.female),
+      'the girl',
+    );
   });
 
   test('Gender and plural translation', () {
     expect(data.translateWithMap(#key7), 'null children');
     expect(data.translateWithMap(#key7, count: 1), 'a child');
     expect(data.translateWithMap(#key7, count: 2), '2 children');
-    expect(data.translateWithMap(#key7, count: 1, gender: JsonIntlGender.male),
-        'a boy');
     expect(
-        data.translateWithMap(#key7, count: 1, gender: JsonIntlGender.female),
-        'a girl');
-    expect(data.translateWithMap(#key7, count: 2, gender: JsonIntlGender.male),
-        '2 boys');
+      data.translateWithMap(#key7, count: 1, gender: JsonIntlGender.male),
+      'a boy',
+    );
     expect(
-        data.translateWithMap(#key7, count: 2, gender: JsonIntlGender.female),
-        '2 girls');
+      data.translateWithMap(#key7, count: 1, gender: JsonIntlGender.female),
+      'a girl',
+    );
+    expect(
+      data.translateWithMap(#key7, count: 2, gender: JsonIntlGender.male),
+      '2 boys',
+    );
+    expect(
+      data.translateWithMap(#key7, count: 2, gender: JsonIntlGender.female),
+      '2 girls',
+    );
   });
 }

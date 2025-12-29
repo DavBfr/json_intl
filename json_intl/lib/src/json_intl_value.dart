@@ -68,7 +68,8 @@ class JsonIntlValue {
     JsonIntlPlural plural,
     JsonIntlPlural? direct,
   ) {
-    final p = _messages[gender] ??
+    final p =
+        _messages[gender] ??
         _messages[JsonIntlGender.neutral] ??
         _messages[JsonIntlGender.male] ??
         _messages[JsonIntlGender.female];
@@ -130,10 +131,7 @@ class JsonIntlValue {
     }
   }
 
-  static void _loadPlural(
-    Map<dynamic, dynamic> map,
-    dynamic message,
-  ) {
+  static void _loadPlural(Map<dynamic, dynamic> map, dynamic message) {
     if (message is String) {
       map[JsonIntlPlural.other] = message;
       return;

@@ -35,8 +35,7 @@ class JsonIntlMockData implements JsonIntlData {
     int precision = 0,
     String? locale,
     bool? strict,
-  }) =>
-      translate(key);
+  }) => translate(key);
 
   @override
   String later(
@@ -48,6 +47,5 @@ class JsonIntlMockData implements JsonIntlData {
     int precision = 0,
     String? locale,
     bool? strict,
-  }) =>
-      text;
+  }) => text;
 }

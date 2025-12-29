@@ -11,6 +11,9 @@ class GeneratorOptions {
     this.mangle = false,
     this.builtin = false,
     this.debug = false,
+    this.pruneUnused = false,
+    this.promoteLater = false,
+    this.dryRun = true,
     this.source = 'assets/intl',
     this.output = 'lib/intl.dart',
   });
@@ -37,6 +40,15 @@ class GeneratorOptions {
   /// Generate debug strings
   final bool debug;
 
+  /// Remove unused translation keys from JSON files before generating
+  final bool pruneUnused;
+
+  /// Promote JsonIntl.later() strings to translation keys before generating
+  final bool promoteLater;
+
+  /// When true, do not write modified JSON/Dart files to disk
+  final bool dryRun;
+
   /// Source directory
   final String source;
 
@@ -50,17 +62,22 @@ class GeneratorOptions {
     bool? mangle,
     bool? builtin,
     bool? debug,
+    bool? pruneUnused,
+    bool? promoteLater,
+    bool? dryRun,
     String? source,
     String? output,
-  }) =>
-      GeneratorOptions(
-        defaultLocale: defaultLocale ?? this.defaultLocale,
-        className: className ?? this.className,
-        format: format ?? this.format,
-        mangle: mangle ?? this.mangle,
-        builtin: builtin ?? this.builtin,
-        debug: debug ?? this.debug,
-        source: source ?? this.source,
-        output: output ?? this.output,
-      );
+  }) => GeneratorOptions(
+    defaultLocale: defaultLocale ?? this.defaultLocale,
+    className: className ?? this.className,
+    format: format ?? this.format,
+    mangle: mangle ?? this.mangle,
+    builtin: builtin ?? this.builtin,
+    debug: debug ?? this.debug,
+    pruneUnused: pruneUnused ?? this.pruneUnused,
+    promoteLater: promoteLater ?? this.promoteLater,
+    dryRun: dryRun ?? this.dryRun,
+    source: source ?? this.source,
+    output: output ?? this.output,
+  );
 }

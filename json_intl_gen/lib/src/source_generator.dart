@@ -7,6 +7,7 @@ import 'dart:convert';
 
 import 'package:dart_style/dart_style.dart';
 import 'package:json_intl/json_intl_data.dart';
+import 'package:json_intl_gen/src/reserved.dart';
 import 'package:pub_semver/pub_semver.dart';
 
 import 'generator_options.dart';
@@ -22,10 +23,7 @@ extension _SymbolString on Symbol {
 /// Generate dart source code
 class Generator {
   /// Create a `Generator`
-  const Generator({
-    required this.intl,
-    required this.options,
-  });
+  const Generator({required this.intl, required this.options});
 
   /// Generator options
   final GeneratorOptions options;
@@ -90,17 +88,7 @@ class Generator {
     final sortedKeys = keys.toList();
     sortedKeys.sort((a, b) => a.getString().compareTo(b.getString()));
 
-    final generatedKeys = <String>{
-      'abstract', 'as', 'assert', 'async', 'await', 'base', 'break', //
-      'case', 'catch', 'class', 'const', 'continue', 'covariant', 'default',
-      'deferred', 'do', 'dynamic', 'else', 'enum', 'export', 'extends',
-      'extension', 'external', 'factory', 'false', 'final', 'finally', 'for',
-      'Function', 'get', 'hide', 'if', 'implements', 'import', 'in',
-      'interface', 'is', 'late', 'library', 'mixin', 'new', 'null', 'of', 'on',
-      'operator', 'part', 'required', 'rethrow', 'return', 'sealed', 'set',
-      'show', 'static', 'super', 'switch', 'sync', 'this', 'throw', 'true',
-      'try', 'type', 'typedef', 'var', 'void', 'when', 'with', 'while', 'yield',
-    };
+    final generatedKeys = <String>{...reservedKeys};
 
     final variables = <String>{};
     for (final sortedKey in sortedKeys) {
@@ -193,9 +181,9 @@ class Generator {
     output.addAll(_createSourceFromKeys());
 
     if (options.format) {
-      return DartFormatter(languageVersion: Version.none)
-          .format(output.join('\n'))
-          .toString();
+      return DartFormatter(
+        languageVersion: Version.none,
+      ).format(output.join('\n')).toString();
     }
 
     return output.join('\n');
@@ -241,7 +229,8 @@ class Generator {
           output.add('JsonIntlGender.${gender.key}: {');
           for (final plural in gender.value.entries) {
             output.add(
-                'JsonIntlPlural.${plural.key}: ${outputStr(plural.value)},');
+              'JsonIntlPlural.${plural.key}: ${outputStr(plural.value)},',
+            );
           }
           output.add('},');
         }
@@ -254,9 +243,9 @@ class Generator {
     output.add('};');
 
     if (options.format) {
-      return DartFormatter(languageVersion: Version.none)
-          .format(output.join('\n'))
-          .toString();
+      return DartFormatter(
+        languageVersion: Version.none,
+      ).format(output.join('\n')).toString();
     }
 
     return output.join('\n');

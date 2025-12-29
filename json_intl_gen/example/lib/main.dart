@@ -59,11 +59,11 @@ class MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             // A string translated depending on a number to count something
-            Text(JsonIntl.of(context).count(
-              _counter,
-              IntlKeys.pushed,
-              strict: false,
-            )),
+            Text(
+              JsonIntl.of(
+                context,
+              ).count(_counter, IntlKeys.pushed, strict: false),
+            ),
           ],
         ),
       ),

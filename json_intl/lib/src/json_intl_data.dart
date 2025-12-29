@@ -57,11 +57,7 @@ class JsonIntlData {
       throw JsonIntlException('The translation key [$key] was not found');
     }
 
-    var value = message.get(
-      JsonIntlGender.neutral,
-      JsonIntlPlural.other,
-      null,
-    );
+    var value = message.get(JsonIntlGender.neutral, JsonIntlPlural.other, null);
     if (value == null) {
       if (_debug) {
         var debug = false;
@@ -75,7 +71,8 @@ class JsonIntlData {
       }
 
       throw JsonIntlException(
-          'Unable to build a translation for [$key]\n  Gender: neutral\n  Plural: other');
+        'Unable to build a translation for [$key]\n  Gender: neutral\n  Plural: other',
+      );
     }
 
     assert(() {
@@ -89,11 +86,16 @@ class JsonIntlData {
   }
 
   static plural_rules.PluralRule? _pluralRule(
-      String? locale, num howMany, int precision) {
+    String? locale,
+    num howMany,
+    int precision,
+  ) {
     plural_rules.startRuleEvaluation(howMany, precision);
     final verifiedLocale = Intl.verifiedLocale(
-        locale, plural_rules.localeHasPluralRules,
-        onFailure: (locale) => 'default');
+      locale,
+      plural_rules.localeHasPluralRules,
+      onFailure: (locale) => 'default',
+    );
     if (_cachedPluralLocale == verifiedLocale) {
       return _cachedPluralRule;
     } else {
@@ -174,11 +176,7 @@ class JsonIntlData {
       }
     }
 
-    final value = message.get(
-      gender,
-      plural,
-      strictValue ? null : direct,
-    );
+    final value = message.get(gender, plural, strictValue ? null : direct);
     if (value == null) {
       if (_debug) {
         var debug = false;
@@ -191,7 +189,8 @@ class JsonIntlData {
         }
       }
       throw JsonIntlException(
-          'Unable to build a translation for [$key]\n  Gender: $gender\n  Plural: $plural\n  Direct: $direct\n  Count: $count\n  Map: $map');
+        'Unable to build a translation for [$key]\n  Gender: $gender\n  Plural: $plural\n  Direct: $direct\n  Count: $count\n  Map: $map',
+      );
     }
 
     var result = mustache.convert(value);

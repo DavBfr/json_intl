@@ -69,8 +69,8 @@ class MyBuilder extends Builder {
 
   @override
   Map<String, List<String>> get buildExtensions => {
-        'pubspec.yaml': [options.output],
-        for (final file in Glob('${options.source}/*.json').listSync())
-          file.path: [options.output],
-      };
+    'pubspec.yaml': [options.output],
+    for (final file in Glob('${options.source}/*.json').listSync())
+      file.path: [options.output],
+  };
 }

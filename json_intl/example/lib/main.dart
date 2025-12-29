@@ -30,11 +30,7 @@ class MyApp extends StatelessWidget {
       // Set the list of supported languages in this list.
       // On iOS, you will have to specify the list of languages in the file
       // Info.plist
-      supportedLocales: const [
-        Locale('de'),
-        Locale('en'),
-        Locale('fr'),
-      ],
+      supportedLocales: const [Locale('de'), Locale('en'), Locale('fr')],
     );
   }
 }
@@ -67,11 +63,7 @@ class MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             // A string translated depending on a number to count something
-            Text(JsonIntl.of(context).count(
-              _counter,
-              #pushed,
-              strict: false,
-            )),
+            Text(JsonIntl.of(context).count(_counter, #pushed, strict: false)),
           ],
         ),
       ),

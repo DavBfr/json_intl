@@ -30,11 +30,7 @@ class IntlKeys {
 const defaultLocaleIntlKeys = 'en';
 
 /// Available Locales
-const availableLocalesIntlKeys = [
-  'en',
-];
+const availableLocalesIntlKeys = ['en'];
 
 /// Supported Locales
-const supportedLocalesIntlKeys = [
-  Locale('en'),
-];
+const supportedLocalesIntlKeys = [Locale('en')];
