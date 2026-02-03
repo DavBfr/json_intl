@@ -2,8 +2,15 @@
 
 import 'dart:ui';
 
+import 'package:json_intl/json_intl.dart';
+
+const jsonIntlDelegate = JsonIntlDelegate(
+  base: 'json_intl/test/data',
+  availableLocales: availableLocalesIntlKeys,
+);
+
 /// Internationalization constants
-class IntlKeys {
+mixin IntlKeys {
   /// en: 'value'
   static const key1 = #key1;
 
@@ -30,7 +37,11 @@ class IntlKeys {
 const defaultLocaleIntlKeys = 'en';
 
 /// Available Locales
-const availableLocalesIntlKeys = ['en'];
+const availableLocalesIntlKeys = [
+  'en',
+];
 
 /// Supported Locales
-const supportedLocalesIntlKeys = [Locale('en')];
+const supportedLocalesIntlKeys = [
+  Locale('en'),
+];
