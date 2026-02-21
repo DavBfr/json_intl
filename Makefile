@@ -22,7 +22,7 @@ json_intl_gen/example/.metadata:
 format: format-dart
 
 format-dart: $(DART_SRC)
-	$(DART_BIN) format --fix $^
+	$(DART_BIN) format $^
 
 clean:
 	git clean -fdx -e .vscode
