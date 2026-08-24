@@ -96,10 +96,10 @@ class _Scanner extends RecursiveAstVisitor<void> {
         if (text != null) {
           final namedArgSource = <String, String>{};
           for (final arg in args) {
-            if (arg is NamedExpression) {
-              namedArgSource[arg.name.label.name] = source.substring(
-                arg.expression.offset,
-                arg.expression.end,
+            if (arg is NamedArgument) {
+              namedArgSource[arg.name.lexeme] = source.substring(
+                arg.argumentExpression.offset,
+                arg.argumentExpression.end,
               );
             }
           }
